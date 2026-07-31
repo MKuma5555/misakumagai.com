@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "works": "Works",
+    "contact": "Contact",
+    "resume": "Resume"
+  },
+  "loading": {
+    "greeting": "Hi, I'm Misa 👋",
+    "subtitle": "Loading Portfolio...",
+    "done": "Let's build something together."
+  },
+  "hero": {
+    "title": "Hi, I'm Misa.",
+    "role": "Frontend Engineer",
+    "tagline": "Building experiences people enjoy using."
+  },
+  "about": {
+    "title": "About Me"
+  },
+  "journey": {
+    "title": "My Journey"
+  },
+  "works": {
+    "title": "Works",
+    "featured": "Featured Projects",
+    "all": "All Projects",
+    "search": "Search projects...",
+    "categories": {
+      "all": "All",
+      "React": "React",
+      "Frontend": "Frontend",
+      "WordPress": "WordPress",
+      "UI": "UI",
+      "Dental": "Dental",
+      "Personal": "Personal"
+    }
+  },
+  "project": {
+    "overview": "Overview",
+    "problem": "Problem",
+    "solution": "Solution",
+    "role": "My Role",
+    "techStack": "Tech Stack",
+    "lessons": "Lessons Learned",
+    "github": "GitHub",
+    "live": "Live Site",
+    "likes": "likes",
+    "views": "views"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message",
+    "success": "Message sent!",
+    "error": "Something went wrong."
+  },
+  "game": {
+    "title": "Melbourne Coffee Catch",
+    "start": "Start Game",
+    "score": "Score",
+    "gameOver": "Game Over!"
+  }
+}

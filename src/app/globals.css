@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Tailwind v4 は tailwind.config.ts を読まない。設定はここに書く。
+   色は misa-site（現行デザイン）から移植したもの。 */
+@theme {
+  --color-cream:  #f4f0e6;  /* ページ背景 */
+  --color-sand:   #eee9dc;  /* worksセクション背景 */
+  --color-forest: #4a5e3e;  /* アクセント（緑） */
+  --color-sage:   #b9c8ad;  /* カード交互色 */
+  --color-mist:   #d6dfc9;  /* 画像下地 */
+  --color-ink:    #2b2820;  /* 本文 */
+  --color-muted:  #706b5d;  /* 補助文字 */
+  --color-forest-mid:  #536947;
+  --color-forest-pale: #6c7d55;
+
+  --font-sans:  var(--font-inter),    system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-mono:  var(--font-jetbrains), monospace;
+}
+
+/* リセットは必ず @layer base に入れる。
+   層の外に書くと px-6 などのユーティリティを打ち消してしまう（v4の仕様）。 */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: 0;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* 日本語見出しは欧文より行間を要するため、和文が入る見出しで潰れないよう下限を設ける */
+  :lang(ja) h1,
+  :lang(ja) h2 {
+    line-height: inherit;
+  }
+}
+
+/* SPの下部固定バーぶん、ページ末尾に余白を確保する */
+@media (max-width: 767px) {
+  body { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); }
+}
+
+::selection { background: #4a5e3e33; color: #2b2820; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f4f0e6; }
+::-webkit-scrollbar-thumb { background: #4a5e3e; border-radius: 3px; }
