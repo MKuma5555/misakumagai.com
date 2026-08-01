@@ -1,4 +1,4 @@
-import { sanityClient } from './client'
+import { getSanityClient } from './client'
 import { urlFor } from './image'
 import type { Work } from '@/lib/works'
 import { CATEGORIES } from './constants'
@@ -80,7 +80,7 @@ export async function getWorks(locale: string, opts?: { featuredOnly?: boolean }
     opts?.featuredOnly ? `featured == true` : null,
   ].filter(Boolean).join(' && ')
 
-  const raw = await sanityClient.fetch<RawProject[]>(
+  const raw = await getSanityClient().fetch<RawProject[]>(
     `*[${filter}] | order(order asc, _createdAt asc) { ${FIELDS} }`,
     { locale },
   )
@@ -89,7 +89,7 @@ export async function getWorks(locale: string, opts?: { featuredOnly?: boolean }
 
 /** 1件だけ取得する */
 export async function getWork(slug: string): Promise<Work | null> {
-  const raw = await sanityClient.fetch<RawProject | null>(
+  const raw = await getSanityClient().fetch<RawProject | null>(
     `*[_type == "project" && slug.current == $slug][0] { ${FIELDS} }`,
     { slug },
   )
@@ -98,7 +98,7 @@ export async function getWork(slug: string): Promise<Work | null> {
 
 /** ビルド時にページを作るための一覧 */
 export async function getAllSlugs(): Promise<{ slug: string; showIn: string[] }[]> {
-  return sanityClient.fetch(
+  return getSanityClient().fetch(
     `*[_type == "project" && defined(slug.current)]{ "slug": slug.current, showIn }`,
   )
 }
@@ -108,7 +108,7 @@ export async function getAllSlugs(): Promise<{ slug: string; showIn: string[] }[
 export type WorkCard = Work & { category: string; status: string }
 
 export async function getWorksWithMeta(locale: string): Promise<WorkCard[]> {
-  const raw = await sanityClient.fetch<RawProject[]>(
+  const raw = await getSanityClient().fetch<RawProject[]>(
     `*[_type == "project" && $locale in showIn] | order(order asc, _createdAt asc) { ${FIELDS} }`,
     { locale },
   )
