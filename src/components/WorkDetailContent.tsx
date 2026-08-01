@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, Mail } from 'lucide-react'
-import { works } from '@/lib/works'
+import type { Work } from '@/lib/works'
 import SiteNav from './SiteNav'
 import SiteFooter from './SiteFooter'
+import BackToTop from './BackToTop'
 
-export default function WorkDetailContent({ id, en, locale }: { id: string; en: boolean; locale: string }) {
-  const work = works.find((w) => w.id === id);
+export default function WorkDetailContent({ work, en, locale }: { work: Work; en: boolean; locale: string }) {
+  const id = work.id;
 
   if (!work) {
     return (
@@ -28,7 +29,7 @@ export default function WorkDetailContent({ id, en, locale }: { id: string; en: 
 
       <section className="relative px-6 pb-20 pt-32 md:px-16 md:pt-40">
         <div className="mx-auto max-w-[1080px]">
-          <Link href={`/${locale}/#works`} className="inline-flex items-center gap-2 text-sm text-[#53604d] transition-colors hover:text-[#4a5e3e]">
+          <Link href={`/${locale}/works`} className="inline-flex items-center gap-2 text-sm text-[#53604d] transition-colors hover:text-[#4a5e3e]">
             <ArrowLeft size={16} /> {en ? "Back to works" : "作品一覧に戻る"}
           </Link>
 
@@ -54,7 +55,7 @@ export default function WorkDetailContent({ id, en, locale }: { id: string; en: 
           </div>
 
           <div className="mt-12 overflow-hidden rounded-[1.5rem] shadow-[0_20px_50px_rgba(43,40,32,.14)]">
-            <img src={work.image} alt={en ? work.titleEn : work.title} className="h-full w-full object-cover" />
+            {work.image && <img src={work.image} alt={en ? work.titleEn : work.title} className="h-full w-full object-cover" />}
           </div>
 
           <div className="mt-16 max-w-2xl">
@@ -122,6 +123,7 @@ export default function WorkDetailContent({ id, en, locale }: { id: string; en: 
       </section>
 
       <SiteFooter en={en} locale={locale} />
+      <BackToTop en={en} />
     </main>
   );
 }

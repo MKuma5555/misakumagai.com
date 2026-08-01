@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { User, Layers, Folder, Mail, MessageCircle, Menu } from 'lucide-react'
+import { Home, User, Layers, Folder, Mail, Menu } from 'lucide-react'
 
 const items = [
-  { id: 'about', label: 'About', Icon: User },
-  { id: 'skills', label: 'Skills', Icon: Layers },
-  { id: 'works', label: 'Works', Icon: Folder },
-  { id: 'contact', label: 'Contact', Icon: Mail },
+  { id: 'top', en: 'Top', ja: 'トップ', Icon: Home },
+  { id: 'about', en: 'About', ja: 'わたしについて', Icon: User },
+  { id: 'skills', en: 'Skills', ja: 'できること', Icon: Layers },
+  { id: 'works', en: 'Works', ja: 'つくったもの', Icon: Folder },
+  { id: 'contact', en: 'Contact', ja: 'ご相談', Icon: Mail },
 ] as const
 
 export default function SiteNav({
@@ -52,7 +53,7 @@ export default function SiteNav({
               showCircles ? 'scale-100 opacity-100' : 'pointer-events-none -translate-y-1.5 scale-75 opacity-0'
             }`}
           >
-            {items.map(({ id, label, Icon }) => (
+            {items.map(({ id, en: labelEn, ja: labelJa, Icon }) => (
               <Link
                 key={id}
                 href={href(id)}
@@ -61,7 +62,7 @@ export default function SiteNav({
               >
                 <Icon size={23} className="min-w-[60px] shrink-0" />
                 <span className="text-[14px] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                  {label}
+                  {en ? labelEn : labelJa}
                 </span>
               </Link>
             ))}
@@ -81,7 +82,7 @@ export default function SiteNav({
           <Link
             href={`/${otherLocale}`}
             className="absolute left-0 flex items-center gap-1.5 rounded-xl bg-[#f4f0e6] px-3.5 py-2 font-mono text-[11px] text-[#4a5e3e] shadow-[0_5px_18px_rgba(43,40,32,.15)] transition-all duration-300"
-            style={{ top: showCircles ? '298px' : '80px' }}
+            style={{ top: showCircles ? '372px' : '80px' }}
           >
             <span className={en ? 'text-[#2b2820]' : ''}>EN</span>
             <span className="opacity-40">|</span>
@@ -103,25 +104,15 @@ export default function SiteNav({
       {/* ── SP：下部固定バー ── */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-[#4a5e3e]/20 bg-[#eee9dc] pt-2 md:hidden pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-around">
-          {items.map(({ id, label, Icon }) => (
+          {items.map(({ id, en: labelEn, ja: labelJa, Icon }) => (
             <Link key={id} href={href(id)} className="flex flex-1 flex-col items-center gap-0.5 py-1">
               <Icon size={17} className="text-[#4a5e3e]" />
-              <span className="text-[9px] text-[#706b5d]">{label}</span>
+              <span className="text-[9px] text-[#706b5d]">{en ? labelEn : labelJa}</span>
             </Link>
           ))}
         </div>
       </nav>
 
-      {/* ── SP：日本語版だけ、バーとは別物体として右下に浮かせる ── */}
-      {!en && (
-        <a
-          href={`/${locale}/#contact`}
-          className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] right-3 z-40 inline-flex items-center gap-2 rounded-full bg-[#4a5e3e] px-4 py-2.5 text-[11px] text-[#f4f0e6] shadow-[0_6px_16px_rgba(43,40,32,.25)] md:hidden"
-        >
-          <MessageCircle size={15} />
-          相談する
-        </a>
-      )}
     </>
   )
 }

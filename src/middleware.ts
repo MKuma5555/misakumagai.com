@@ -19,10 +19,11 @@ export function middleware(request: NextRequest) {
   )
   if (hasLocale) return NextResponse.next()
 
-  // Skip static files and api
+  // Skip static files, api, and the Sanity Studio
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
+    pathname.startsWith('/studio') ||
     pathname.includes('.')
   ) return NextResponse.next()
 

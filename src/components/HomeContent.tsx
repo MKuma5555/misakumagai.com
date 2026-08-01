@@ -2,15 +2,24 @@
 
 import { useState, useEffect, type CSSProperties } from 'react'
 import Link from 'next/link'
-import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react'
-import { works } from '@/lib/works'
-import ContactSection from './ContactSection'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import type { Work } from '@/lib/works'
+import ContactBand from './ContactBand'
+import ClosingNote from './ClosingNote'
+import FloatingCta from './FloatingCta'
 import SiteNav from './SiteNav'
 import SiteFooter from './SiteFooter'
+import WorksBadge from './WorksBadge'
+import SectionCurve from './SectionCurve'
+import ScrollCue from './ScrollCue'
+import TechMarquee from './TechMarquee'
+import SkillsSection from './SkillsSection'
+import JourneySection from './JourneySection'
+import BackToTop from './BackToTop'
 
 const portrait = '/misa-portrait.png'
 
-export default function HomeContent({ en, locale }: { en: boolean; locale: string }) {
+export default function HomeContent({ en, locale, works }: { en: boolean; locale: string; works: Work[] }) {
   const [phase, setPhase] = useState<0 | 1 | 2 | 3>(0);
   const [focus, setFocus] = useState(0);
   // サーバー描画では出さない。初回判定がつくまで待つ
@@ -33,13 +42,14 @@ export default function HomeContent({ en, locale }: { en: boolean; locale: strin
     return () => window.clearInterval(timer);
   }, [phase]);
 
-  const nav = en ? ["About", "Services", "Works", "Contact"] : ["わたしについて", "できること", "つくったもの", "ご相談"];
+  const nav = en ? ["About", "Skills", "Works", "Contact"] : ["わたしについて", "できること", "つくったもの", "ご相談"];
   const services = en
     ? [["01", "Websites", "Long-lasting digital homes for small businesses and clinics."], ["02", "Landing pages", "One focused page with a clear story and a reason to keep scrolling."], ["03", "Frontend development", "React / TypeScript products that feel calm, quick, and considered."], ["04", "Instagram consulting", "A sustainable content rhythm that sounds like your brand."]]
     : [["01", "Web制作", "小さなお店やクリニックのための、長く使えるWebサイト。"], ["02", "LP制作", "サービスの魅力が、必要な人に届く一枚のページ。"], ["03", "フロントエンド開発", "React / TypeScriptで、気持ちよく動くプロダクトを。"], ["04", "Instagramコンサル", "投稿の軸づくりから、無理なく続く運用まで。"]];
 
   return (
-    <main className="min-h-screen bg-[#f4f0e6] text-[#2b2820] selection:bg-[#4a5e3e] selection:text-[#f4f0e6]">
+    <>
+    <main className="relative z-10 mb-[340px] min-h-screen bg-[#f4f0e6] text-[#2b2820] selection:bg-[#4a5e3e] selection:text-[#f4f0e6] md:mb-[420px]">
       <style>{`
         @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         @keyframes float{0%,100%{transform:rotate(-4deg) translateY(0)}50%{transform:rotate(2deg) translateY(-12px)}}
@@ -74,60 +84,76 @@ export default function HomeContent({ en, locale }: { en: boolean; locale: strin
       <section id="top" className="relative flex min-h-screen items-center px-6 pb-20 pt-32 md:px-16">
         <div className="mx-auto grid w-full max-w-[1240px] items-center gap-10 md:grid-cols-[1.06fr_.94fr]">
           <div className="relative z-10">
-            <p className={`reveal font-mono text-[10px] uppercase tracking-[.22em] text-[#4a5e3e] ${phase < 3 ? "opacity-0" : ""}`}>Frontend engineer / Full-stack developer</p>
-            <h1 className={`reveal d1 mt-8 font-serif text-[clamp(3.6rem,8vw,8.3rem)] leading-[.88] tracking-[-.065em] ${phase < 3 ? "opacity-0" : ""}`}>{en ? <>Kind websites,<br /><em>made with care.</em></> : <>ちゃんと伝わる、<br /><em>やさしいWebを。</em></>}</h1>
-            <p className={`reveal d2 mt-9 max-w-md text-[15px] leading-8 text-[#625e51] ${phase < 3 ? "opacity-0" : ""}`}>{en ? "I build digital spaces that feel human — clear for the people using them, thoughtful for the people behind them." : "使う人にはわかりやすく、つくる人には誇らしく。小さな違和感まで大切にしながら、デジタルの居場所をつくっています。"}</p>
-            <a href="#about" className={`reveal d3 mt-9 inline-flex items-center gap-3 rounded-full bg-[#4a5e3e] px-6 py-3 text-sm text-[#f4f0e6] transition-transform hover:-translate-y-1 ${phase < 3 ? "opacity-0" : ""}`}>{en ? "A little about me" : "もう少し、わたしのこと"}<ArrowDown size={15} /></a>
+            <p className={`reveal font-mono text-[10px] uppercase tracking-[.22em] text-[#4a5e3e] ${phase < 3 ? "opacity-0" : ""}`}>Hello, I&apos;m Misa</p>
+
+            <h1
+              className={`reveal d1 mt-7 font-serif leading-[1.02] tracking-[-.05em] ${
+                en ? "text-[clamp(2.4rem,5.4vw,4.6rem)]" : "text-[clamp(3rem,7vw,6.4rem)]"
+              } ${phase < 3 ? "opacity-0" : ""}`}
+            >
+              {en ? (
+                <>Turning ideas into<br /><em>meaningful experiences.</em></>
+              ) : (
+                <>想いを、<br /><em>伝わる形に。</em></>
+              )}
+            </h1>
+
+            <p className={`reveal d2 mt-8 max-w-md text-[15px] leading-8 text-[#625e51] ${phase < 3 ? "opacity-0" : ""}`}>
+              {en ? (
+                <>Thinking together. Building together.</>
+              ) : (
+                <>一緒に考えて、一緒につくる。<br />人だから気づけることを、大切にしています。</>
+              )}
+            </p>
+
+            {/* 採用担当が3秒で拾う行。所在地と言語をここに置く
+                ※就労資格（Full working rights など）が書けるなら英語版に足すと書類が通りやすい */}
+            <p className={`reveal d2 mt-7 font-mono text-[10px] uppercase leading-[1.9] tracking-[.18em] text-[#8c7a55] ${phase < 3 ? "opacity-0" : ""}`}>
+              Frontend developer / Full-stack engineer
+              <br />
+              {en
+                ? "From dentistry to development · Melbourne · JP & EN"
+                : "歯科の現場からWebへ · メルボルン在住 · 日本語 / English"}
+            </p>
+
           </div>
           <div className="relative mx-auto h-[430px] w-full max-w-[480px] md:h-[590px]">
             <div className={`focus-shift ${focus === 1 ? "is-focus" : ""} float absolute right-2 top-3 h-[84%] w-[82%] rounded-[48%_52%_42%_58%/45%_40%_60%_55%] bg-[#d6dfc9]`} />
             <div className={`focus-shift ${focus === 0 ? "is-focus" : ""} absolute bottom-8 left-0 h-[82%] w-[84%] overflow-hidden rounded-[55%_45%_48%_52%/42%_56%_44%_58%] border-[14px] border-[#ebe3d2] shadow-[0_18px_40px_rgba(43,40,32,.16)]`}>
               <img src={portrait} alt="Misa portrait" className="h-full w-full object-cover" />
             </div>
-            <div className={`focus-shift ${focus === 2 ? "is-focus" : ""} absolute bottom-0 right-0 flex h-24 w-24 rotate-6 items-center justify-center rounded-full bg-[#4a5e3e] text-center font-serif text-sm leading-4 text-[#f4f0e6]`}>make<br />it kind</div>
+            <WorksBadge
+              en={en}
+              locale={locale}
+              size={118}
+              className="absolute -bottom-6 right-0 md:-bottom-10 md:-right-12"
+            />
           </div>
         </div>
-        <span className="absolute bottom-7 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-[.28em] text-[#8c7a55]">SCROLL TO EXPLORE</span>
+        <ScrollCue className="absolute bottom-8 right-6 md:right-10" />
       </section>
 
-      <div className="overflow-hidden border-y border-[#d6dfc9] bg-[#2b2820] py-4 text-[#d6dfc9]">
-        <div className="ticker flex w-max gap-14 whitespace-nowrap font-mono text-[10px] tracking-[.25em]">
-          <span>DESIGN WITH CARE</span><span>BUILD FOR PEOPLE</span><span>AUSTRALIA / JAPAN</span><span>DESIGN WITH CARE</span><span>BUILD FOR PEOPLE</span><span>AUSTRALIA / JAPAN</span>
-        </div>
-      </div>
+      <TechMarquee en={en} />
 
-      <section id="about" className="bg-[#d6dfc9] px-6 py-32 md:px-16 md:py-44">
-        <div className="mx-auto grid max-w-[1080px] gap-16 md:grid-cols-[.6fr_1.4fr]">
-          <div><p className="font-mono text-[10px] tracking-[.2em] text-[#4a5e3e]">01 / {nav[0].toUpperCase()}</p><div className="mt-8 h-px w-16 bg-[#4a5e3e]" /></div>
-          <div>
-            <h2 className="font-serif text-5xl leading-[.94] tracking-[-.05em] md:text-8xl">{en ? <>A technical mind,<br /><em>a generous process.</em></> : <>技術のことも、<br /><em>その先にいる人のことも。</em></>}</h2>
-            <p className="mt-10 max-w-xl text-[15px] leading-8 text-[#53604d]">{en ? "I'm Misa, a frontend engineer based in Australia, working with thoughtful people and small teams in Japan and beyond. I believe the best websites leave room to breathe." : "オーストラリアを拠点に、日本のクライアントさんともお仕事をしています。コードを書くことが好き。でも、いちばん大事なのは、その先にいる人がどう感じるかだと思っています。"}</p>
-            <div className="mt-12 flex flex-wrap gap-2">{["Australia / Japan", "React & TypeScript", "Astro", "日本語 / English"].map(x => <span key={x} className="rounded-full border border-[#4a5e3e]/35 px-4 py-2 font-mono text-[10px] text-[#53604d]">{x}</span>)}</div>
-          </div>
-        </div>
-      </section>
+      <JourneySection en={en} />
 
-      <section id="skills" className="px-6 py-32 md:px-16 md:py-44">
-        <div className="mx-auto max-w-[1240px]">
-          <div className="grid gap-14 md:grid-cols-[.72fr_1.28fr]">
-            <div>
-              <p className="font-mono text-[10px] tracking-[.2em] text-[#4a5e3e]">02 / {nav[1].toUpperCase()}</p>
-              <h2 className="mt-9 font-serif text-5xl leading-[.9] tracking-[-.05em] md:text-8xl">{en ? <>From first thought<br /><em>to final detail.</em></> : <>思いつきから、<br /><em>最後のひと手間まで。</em></>}</h2>
-              <p className="mt-9 max-w-xs text-sm leading-7 text-[#706b5d]">{en ? "I stay close to the work, from the first sketch to the small adjustments after launch." : "企画のはじまりから、公開後の小さな調整まで。すぐそばで伴走します。"}</p>
-            </div>
-            <div>{services.map(([n, title, body]) => <div key={n} className="group flex gap-5 border-t border-[#2b2820]/20 py-7 transition-colors hover:border-[#4a5e3e] last:border-b"><span className="font-mono text-[11px] text-[#4a5e3e]">{n}</span><div className="flex-1"><h3 className="font-serif text-3xl tracking-[-.03em]">{title}</h3><p className="mt-3 max-w-lg text-sm leading-6 text-[#706b5d]">{body}</p></div><ArrowUpRight size={18} className="mt-1 text-[#8c7a55] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" /></div>)}</div>
-          </div>
-        </div>
-      </section>
+      <SkillsSection en={en} locale={locale} label={nav[1]} services={services as [string, string, string][]} />
 
-      <section id="works" className="bg-[#eee9dc] px-6 py-32 md:px-16 md:py-44">
+      <SectionCurve from="#f4f0e6" to="#eee9dc" />
+
+      <section id="works" className="bg-[#eee9dc] px-6 pb-32 pt-16 md:px-16 md:pb-44 md:pt-20">
         <div className="mx-auto max-w-[1240px]">
           <div className="flex flex-col justify-between gap-9 md:flex-row md:items-end">
             <div>
               <p className="font-mono text-[10px] tracking-[.2em] text-[#4a5e3e]">03 / {nav[2].toUpperCase()}</p>
               <h2 className="mt-9 font-serif text-5xl leading-[.9] tracking-[-.05em] md:text-8xl">{en ? <>A few things<br /><em>in the world.</em></> : <>最近つくった<br /><em>もの。</em></>}</h2>
             </div>
-            <p className="max-w-xs text-sm leading-7 text-[#706b5d]">{en ? "Small businesses, products, and brands — each with a different question to answer." : "小さなビジネス、プロダクト、ブランド。それぞれ違う問いに向き合った仕事です。"}</p>
+            <div className="flex max-w-xs flex-col items-start gap-6">
+              <p className="text-sm leading-7 text-[#706b5d]">{en ? "Small businesses, products, and brands — each with a different question to answer." : "小さなビジネス、プロダクト、ブランド。それぞれ違う問いに向き合った仕事です。"}</p>
+              <Link href={`/${locale}/works`} className="inline-flex items-center gap-2 rounded-full border border-[#4a5e3e]/35 px-5 py-2.5 text-xs text-[#4a5e3e] transition-colors hover:bg-[#4a5e3e] hover:text-[#f4f0e6]">
+                {en ? "See all works" : "作品一覧を見る"}<ArrowUpRight size={14} />
+              </Link>
+            </div>
           </div>
           <div className="mt-20 space-y-8">
             {works.map((work, i) => (
@@ -148,7 +174,7 @@ export default function HomeContent({ en, locale }: { en: boolean; locale: strin
                   {/* 本体：重なると隠れる部分 */}
                   <div className="grid min-h-[560px] p-6 md:grid-cols-[1.2fr_.8fr] md:p-10">
                     <div className="relative overflow-hidden rounded-[1.4rem] bg-[#d6dfc9]">
-                      <img src={work.image} alt={en ? work.titleEn : work.title} className="h-full w-full object-cover mix-blend-multiply transition duration-700 hover:scale-105" />
+                      {work.image && <img src={work.image} alt={en ? work.titleEn : work.title} className="h-full w-full object-cover mix-blend-multiply transition duration-700 hover:scale-105" />}
                       <span className="absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#4a5e3e] text-[#f4f0e6]"><ArrowRight size={16} /></span>
                     </div>
                     <div className="flex flex-col justify-between px-2 py-8 md:px-10 md:py-4">
@@ -170,10 +196,14 @@ export default function HomeContent({ en, locale }: { en: boolean; locale: strin
         </div>
       </section>
 
-      <ContactSection en={en} nav={nav} />
+      <ContactBand en={en} locale={locale} />
 
       <SiteFooter en={en} locale={locale} />
-    </main>
+      </main>
+
+      <ClosingNote en={en} locale={locale} />
+      {!en && <FloatingCta locale={locale} />}
+    </>
   );
 }
 

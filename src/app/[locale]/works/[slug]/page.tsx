@@ -1,9 +1,15 @@
+import { notFound } from 'next/navigation'
 import { locales } from '@/i18n/config'
-import { works } from '@/lib/works'
+import { getWork, getAllSlugs } from '@/sanity/queries'
 import WorkDetailContent from '@/components/WorkDetailContent'
 
-export function generateStaticParams() {
-  return locales.flatMap((locale) => works.map((w) => ({ locale, slug: w.id })))
+export const revalidate = 60
+
+export async function generateStaticParams() {
+  const all = await getAllSlugs()
+  return all.flatMap(({ slug, showIn }) =>
+    (showIn ?? locales).map((locale) => ({ locale, slug })),
+  )
 }
 
 export default async function Page({
@@ -12,5 +18,7 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  return <WorkDetailContent id={slug} en={locale === 'en'} locale={locale} />
+  const work = await getWork(slug)
+  if (!work) notFound()
+  return <WorkDetailContent work={work} en={locale === 'en'} locale={locale} />
 }
