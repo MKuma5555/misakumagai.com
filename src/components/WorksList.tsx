@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowUpRight } from 'lucide-react'
-import type { WorkCard } from '@/sanity/queries'
+import { ArrowLeft } from 'lucide-react'
+import type { WorkCard as WorkCardData } from '@/sanity/queries'
 import { CATEGORIES, STATUSES } from '@/sanity/constants'
 import SiteNav from './SiteNav'
 import SiteFooter from './SiteFooter'
+import WorkCard from './WorkCard'
 import BackToTop from './BackToTop'
 
 export default function WorksList({
@@ -14,7 +15,7 @@ export default function WorksList({
   en,
   locale,
 }: {
-  works: WorkCard[]
+  works: WorkCardData[]
   en: boolean
   locale: string
 }) {
@@ -82,42 +83,21 @@ export default function WorksList({
           </div>
 
           {/* 一覧 */}
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            {/* カードの中身はホームと共通（WorkCard）。
+               背景の色だけ tone で変える。ここを揃えておかないと、
+               ホームだけ新しく見えて同じサイトに見えなくなる。 */}
             {shown.map((work) => {
               const status = STATUSES.find((s) => s.value === work.status)
               return (
-                <Link
-                  key={work.id}
-                  href={`/${locale}/works/${work.id}`}
-                  className="group overflow-hidden rounded-[1.6rem] bg-[#f4f0e6] shadow-[0_10px_30px_rgba(43,40,32,.09)] transition-transform duration-500 hover:-translate-y-1"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-[#d6dfc9]">
-                    {work.image && (
-                      <img
-                        src={work.image}
-                        alt={en ? work.titleEn : work.title}
-                        className="h-full w-full object-cover mix-blend-multiply transition duration-700 group-hover:scale-105"
-                      />
-                    )}
-                    {status && work.status !== 'live' && (
-                      <span className="absolute left-3 top-3 rounded-full bg-[#2b2820]/80 px-2.5 py-1 font-mono text-[9px] text-[#f4f0e6]">
-                        {en ? status.titleEn : status.title}
-                      </span>
-                    )}
-                  </div>
-                  <div className="px-5 py-5">
-                    <p className="font-mono text-[10px] tracking-wider text-[#4a5e3e]">
-                      {en ? work.typeEn : work.type}
-                    </p>
-                    <h2 className="mt-3 flex items-start justify-between gap-3 font-serif text-2xl leading-tight tracking-[-.03em]">
-                      {en ? work.titleEn : work.title}
-                      <ArrowUpRight size={17} className="mt-1 shrink-0 text-[#4a5e3e]" />
-                    </h2>
-                    <p className="mt-3 line-clamp-3 text-[13px] leading-6 text-[#706b5d]">
-                      {en ? work.summaryEn : work.summary}
-                    </p>
-                  </div>
-                </Link>
+                <div key={work.id} className="relative">
+                  {status && work.status !== 'live' && (
+                    <span className="absolute left-3 top-3 z-10 rounded-full bg-[#2b2820]/80 px-2.5 py-1 font-mono text-[9px] text-[#f4f0e6]">
+                      {en ? status.titleEn : status.title}
+                    </span>
+                  )}
+                  <WorkCard work={work} locale={locale} en={en} tone="light" />
+                </div>
               )
             })}
           </div>

@@ -8,8 +8,6 @@ import SiteFooter from './SiteFooter'
 import BackToTop from './BackToTop'
 
 export default function WorkDetailContent({ work, en, locale }: { work: Work; en: boolean; locale: string }) {
-  const id = work.id;
-
   if (!work) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center bg-[#f4f0e6] px-6 text-[#2b2820]">
@@ -54,12 +52,65 @@ export default function WorkDetailContent({ work, en, locale }: { work: Work; en
             </div>
           </div>
 
-          <div className="mt-12 overflow-hidden rounded-[1.5rem] shadow-[0_20px_50px_rgba(43,40,32,.14)]">
-            {work.image && <img src={work.image} alt={en ? work.titleEn : work.title} className="h-full w-full object-cover" />}
+          {/* デバイス表示。
+             実機のフレーム画像は使わず角丸の板だけにしている（サイトのトーンに合わせるため）。
+             横に並べず、PCの右下にスマホを重ねる。「重ねる」はAboutの写真と共通の文法。
+             中身はゆっくり縦に流れる（globals.css の device-creep）。
+             スマホ側はSanityの「スマホのスクリーンショット」。入れていなければ枠ごと出さない。
+             PCの画面をスマホの枠に入れても縮んだPCにしか見えないので、代用はしない。 */}
+          <div className="relative mt-12 pb-10 md:pb-14">
+            <div className="w-full overflow-hidden rounded-lg border border-[#2b2820]/12 bg-white shadow-[0_30px_70px_rgba(43,40,32,.13)] md:w-[88%]">
+              <div className="flex h-[34px] items-center gap-1.5 border-b border-[#2b2820]/10 bg-[#f2efe6] px-3.5">
+                <span className="block h-[9px] w-[9px] rounded-full bg-[#d5d0c0]" />
+                <span className="block h-[9px] w-[9px] rounded-full bg-[#d5d0c0]" />
+                <span className="block h-[9px] w-[9px] rounded-full bg-[#d5d0c0]" />
+              </div>
+              <div className="h-[240px] overflow-hidden md:h-[460px]">
+                {work.image && (
+                  <img
+                    src={work.image}
+                    alt={en ? work.titleEn : work.title}
+                    className="device-creep w-full"
+                  />
+                )}
+              </div>
+            </div>
+
+            {work.mobileShot && (
+              <div className="-mt-12 ml-auto w-[150px] overflow-hidden rounded-xl border border-[#2b2820]/12 bg-white shadow-[0_24px_60px_rgba(43,40,32,.18)] md:absolute md:bottom-0 md:right-0 md:mt-0 md:w-[210px]">
+                <div className="h-[250px] overflow-hidden md:h-[380px]">
+                  <img
+                    src={work.mobileShot}
+                    alt=""
+                    className="device-creep device-creep-slow w-full"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="mt-16 max-w-2xl">
+          <div className="mt-14 max-w-2xl">
             <p className="text-lg leading-9 text-[#53604d]">{en ? work.descriptionEn : work.description}</p>
+
+            {/* 作品を見て「これがいい」と思った人を、その場で問い合わせにつなげる */}
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href={`/${locale}/#contact`}
+                className="inline-flex items-center gap-2 rounded-full bg-[#4a5e3e] px-7 py-3.5 text-sm text-[#f4f0e6] transition-colors hover:bg-[#3b4d31]"
+              >
+                {en ? 'Start a similar project' : '似た制作を相談する'}
+              </Link>
+              {work.liveUrl && (
+                <a
+                  href={work.liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#4a5e3e]/35 px-7 py-3.5 text-sm text-[#4a5e3e] transition-colors hover:bg-[#4a5e3e] hover:text-[#f4f0e6]"
+                >
+                  {en ? 'Visit the site' : 'サイトを見る'} <ArrowUpRight size={15} />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -115,7 +166,7 @@ export default function WorkDetailContent({ work, en, locale }: { work: Work; en
 
       <section className="bg-[#2b2820] px-6 py-24 text-[#f4f0e6] md:px-16 md:py-32">
         <div className="mx-auto max-w-[1080px] text-center">
-          <h2 className="font-serif text-4xl leading-[.95] tracking-[-.04em] md:text-6xl">{en ? <>Like what you see?<br /><em>Let's talk.</em></> : <>気になることが<br /><em>ありましたら。</em></>}</h2>
+          <h2 className="font-serif text-4xl leading-[.95] tracking-[-.04em] md:text-6xl">{en ? <>Like what you see?<br /><em>Let&apos;s talk.</em></> : <>気になることが<br /><em>ありましたら。</em></>}</h2>
           <Link href={`/${locale}/#contact`} className="mt-10 inline-flex items-center gap-3 rounded-full bg-[#4a5e3e] px-7 py-3.5 text-sm text-[#f4f0e6] transition-transform hover:-translate-y-1">
             {en ? "Start a conversation" : "ご相談する"} <Mail size={16} />
           </Link>

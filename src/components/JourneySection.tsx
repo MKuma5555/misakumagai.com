@@ -162,7 +162,9 @@ export default function JourneySection({ en }: { en: boolean }) {
         <div className="mt-8 rounded-[1.6rem] bg-[#f4f0e6] p-6 md:mt-8 md:p-8">
           <div className="grid gap-6 md:grid-cols-[.62fr_1.38fr] md:gap-9">
             {stop.image ? (
-              <img src={stop.image} alt="" className="aspect-[5/4] w-full rounded-2xl object-cover" />
+              <div className="photo-soft-wrap aspect-[5/4] w-full">
+                <img src={stop.image} alt="" className="h-full w-full object-cover" />
+              </div>
             ) : (
               <div className="flex aspect-[5/4] w-full items-center justify-center rounded-2xl bg-[#d6dfc9]/50">
                 <span className="font-mono text-[10px] tracking-[.2em] text-[#4a5e3e]/50">PHOTO</span>

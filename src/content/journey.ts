@@ -1,5 +1,5 @@
 // Aboutセクションの文章。ここだけ書き換えれば見た目は変わらない。
-// 下書きは content-drafts/about-journey.md にある。
+// 下書きと判断の記録は content-drafts/about-journey.md にある。
 
 export type JourneyStop = {
   key: string
@@ -23,41 +23,42 @@ export const journeyIntro = {
 export const journey: JourneyStop[] = [
   {
     key: 'JAPAN',
-    captionJa: '好きな仕事だった',
-    captionEn: 'A job I loved',
-    headingJa: '好きな仕事だった。',
-    headingEn: 'It was a job I loved.',
+    captionJa: '歯科衛生士だった頃',
+    captionEn: 'Dental hygienist',
+    headingJa: 'はじめての仕事は、歯科衛生士でした。',
+    headingEn: 'My first job was as a dental hygienist.',
     bodyJa: [
-      '20歳から5年半、歯科衛生士として働いていました。患者さんを個人で担当して、少しずつ良くなっていくのを見るのが好きでした。',
-      'もともと海外旅行が好きで、年に一度は友達と出かけていました。パッションとジェスチャーでなんとかなる。でも、深い話はできない。',
-      'いろんな国の人と、もっとちゃんと話してみたかった。',
+      '20歳から5年半、歯科衛生士として働いていました。患者さんと一対一で向き合い、少しずつ変化していく姿を一緒に見守る。その時間が好きでした。',
+      'でも、25歳を過ぎた頃、ふと考えるようになりました。「私は、この先もずっと同じ道を歩くのだろうか。」',
+      'もともと海外旅行が好きで、いろいろな国の人と話すことも好きでした。もっと広い世界を見てみたい。そう思い、オーストラリアへの渡航を決めました。',
     ],
-    bodyEn: [
-      'I worked as a dental hygienist for five and a half years, from the age of twenty.',
-    ],
+    bodyEn: ['(英語版は日本語が固まってから書く)'],
+    image: '/journey-01-japan.webp',
   },
   {
     key: 'AUSTRALIA',
-    captionJa: '赤ちゃんになった気分',
-    captionEn: 'Like being an infant again',
-    headingJa: '赤ちゃんになった気分だった。',
-    headingEn: 'I felt like an infant again.',
+    captionJa: '言葉が通じなかった',
+    captionEn: 'Losing my words',
+    headingJa: '旅行と暮らしは、まったく別のものでした。',
+    headingEn: 'Travelling and living are not the same thing.',
     bodyJa: [
-      '来る前の一年間、仕事のあとに英会話教室に通っていました。それでも、実際に来たら何も聞き取れなかった。',
-      '日本でなら普通に話せることが、話せない。買い物でも、仕事でも、悔しい思いをしました。しゃべれないというだけで、人として扱われていないように感じたこともあります。',
-      '明るいタイプだったはずなのに、暗くなっていきました。電話をかけるのが、ずっと怖かった。3年、4年経っても、そんなに変わりませんでした。',
+      '言葉が通じない。自分の考えを伝えられない。しゃべれないというだけで、人として扱われていないように感じたこともあります。',
+      '一方で、少しずつ会話ができるようになり、人とつながる喜びも知りました。',
+      'この経験を通して、「伝える」ということについて深く考えるようになりました。',
     ],
     bodyEn: ['(英語版は日本語が固まってから書く)'],
+    image: '/journey-02-australia.webp',
   },
   {
     key: 'CAD/CAM',
     captionJa: '画面の中でつくりはじめた',
-    captionEn: 'Started building on a screen',
-    headingJa: '画面の中で、モノをつくりはじめた。',
+    captionEn: 'Designing on a screen',
+    headingJa: '画面の中で、ものづくりを始めました。',
     headingEn: 'I started making things on a screen.',
     bodyJa: [
-      '矯正専門の歯科で、CAD/CAMの技工を担当していました。3Dで歯のモデルを起こし、スプリントを設計する仕事です。',
-      '決められた条件の中で形を決める。現物に合わなければ使えない。',
+      'オーストラリアの歯科医院で働くなかで、CAD/CAMテクニシャンへ転職しました。歯の形を設計し、3Dプリンターで模型を作り、実際に患者さんの口の中で使われる装置をデザインする。',
+      '画面の中で作ったものが、現実の世界で誰かの役に立つ。その感覚に夢中になりました。',
+      'そして、「もっと別の形でものづくりに関わってみたい」と考えるようになりました。',
     ],
     bodyEn: ['(英語版は日本語が固まってから書く)'],
   },
@@ -68,22 +69,24 @@ export const journey: JourneyStop[] = [
     headingJa: '昼は歯科、夜はコード。',
     headingEn: 'Dentistry by day, code by night.',
     bodyJa: [
-      'SEのブートキャンプと両立するために、歯科助手をパートタイムに切り替えました。3年半、続けています。',
-      '日本のオンラインスクールにも入り、そこから案件をいただくようになりました。',
+      '昼間は歯科助手として働きながら、オーストラリアのブートキャンプに通うことを決めました。3年半、続けています。',
+      'CAD/CAMで感じた手ごたえを、もっと別の形で試してみたかった。ソフトウェアエンジニアという仕事を知って、そう思うようになりました。',
     ],
     bodyEn: ['(英語版は日本語が固まってから書く)'],
+    image: '/journey-04-learning.webp',
   },
   {
     key: 'NOW',
-    captionJa: '伝わるものをつくっている',
-    captionEn: 'Building things that connect',
-    headingJa: '歯医者から、抜け出せないと思っていた。',
-    headingEn: 'I thought I would never leave dentistry.',
+    captionJa: 'つくることと、伝えること',
+    captionEn: 'Making and communicating',
+    headingJa: 'つくることと、伝えること。',
+    headingEn: 'Making things, and getting them through.',
     bodyJa: [
-      'でも今は、そう思っていません。',
-      'Instagramの案件で症例写真を見ることがあります。先生は忙しくて、詳しい説明までは書いてくれない。だから写真と症例から自分で読み取って、伝わる言葉に置き換えます。これが、楽しいんです。',
-      '毎日歯を見ても、嫌じゃない。たぶん、そこは変わっていません。',
+      '日本の案件に携わる機会をいただくようになりました。Webサイト制作やアプリケーション開発、SNS運用など、さまざまな仕事に挑戦しています。',
+      '以前は、歯科とITはまったく別の世界だと思っていました。でも今は、そうは思っていません。相手のことを理解し、課題を見つけ、必要なものを形にする。私がずっと続けてきたのは、「伝えること」と「つくること」なのだと思います。',
+      'これからも、新しい技術を学びながら、人と人をつなぐ仕事を続けていきたいと思っています。',
     ],
     bodyEn: ['(英語版は日本語が固まってから書く)'],
+    image: '/journey-05-now.webp',
   },
 ]
