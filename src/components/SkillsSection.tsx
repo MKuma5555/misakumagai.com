@@ -81,15 +81,21 @@ export default function SkillsSection({
                 </div>
               </div>
             ) : (
-              services.map(([n, title, body]) => (
+              /* 文字だけのセクションなので、番号を特大にして強弱をつける。
+                 ホバーで番号が濃くなり、行がわずかに右へ寄る。 */
+              services.map(([n, title, body], i) => (
                 <div
                   key={n}
-                  className="group flex gap-5 border-t border-[#2b2820]/20 py-7 transition-colors last:border-b hover:border-[#4a5e3e]"
+                  data-reveal
+                  style={{ '--d': `${i * 0.07}s` } as React.CSSProperties}
+                  className="group flex items-baseline gap-6 border-t border-[#2b2820]/20 py-7 transition-[border-color,padding-left] duration-300 last:border-b hover:border-[#4a5e3e] md:gap-7 md:hover:pl-2.5"
                 >
-                  <span className="font-mono text-[11px] text-[#4a5e3e]">{n}</span>
+                  <span className="w-[52px] shrink-0 font-serif text-[34px] leading-[.9] text-[#b9c8ad] transition-colors duration-300 group-hover:text-[#4a5e3e] md:w-[78px] md:text-[52px]">
+                    {n}
+                  </span>
                   <div className="flex-1">
-                    <h3 className="font-serif text-3xl tracking-[-.03em]">{title}</h3>
-                    <p className="mt-3 max-w-md text-sm leading-7 text-[#706b5d]">{body}</p>
+                    <h3 className="font-serif text-2xl tracking-[-.03em] md:text-3xl">{title}</h3>
+                    <p className="mt-2.5 max-w-md text-sm leading-8 text-[#706b5d]">{body}</p>
                   </div>
                 </div>
               ))

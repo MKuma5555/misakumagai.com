@@ -53,6 +53,11 @@ export const project = defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: 'mobileShot', title: 'スマホのスクリーンショット', type: 'image', group: 'media',
+      description: '詳細ページでPCの右下に重ねて出る1枚。入れないとスマホの枠自体を出さない',
+      options: { hotspot: true },
+    }),
+    defineField({
       name: 'gallery', title: 'ギャラリー', type: 'array', group: 'media',
       of: [{ type: 'image', options: { hotspot: true } }],
     }),

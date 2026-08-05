@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ja版モック — About / Works / 作品詳細</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Klee+One:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f4f0e6;
+  --cream-2:#eee9dc;
+  --ink:#2b2820;
+  --muted:#706b5d;
+  --sage:#4a5e3e;
+  --sage-mid:#b9c8ad;
+  --sage-pale:#d6dfc9;
+  --serif:'Fraunces',serif;
+  --jp:'Klee One',serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:var(--jp);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+@media(min-width:768px){.wrap{padding:0 64px}}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--sage)}
+
+/* モック用の注記。実装には持ち込まない */
+.note{background:#2b2820;color:#d6dfc9;font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:10px 24px}
+@media(min-width:768px){.note{padding:10px 64px}}
+
+/* ── nav（今のまま） ─────────────────────── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 24px}
+@media(min-width:768px){nav{padding:26px 64px}}
+.logo{font-family:var(--serif);font-style:italic;font-size:26px}
+.navlinks{display:flex;gap:26px;font-size:12px;color:var(--muted);align-items:center}
+.navlinks .lang{color:var(--sage);font-family:var(--mono);font-size:11px;letter-spacing:.1em}
+
+/* ── About ────────────────────────────────
+   角丸パネルを1枚敷き、写真は右端からはみ出させる。
+   はみ出す分、パネルのテキストは左半分に収める。 */
+/* 他セクションと同じ左端に文字を揃えるための値。
+   max-w-[1240px] + px-16 と一致する。 */
+/* --gutter は他セクションと同じ左端（max-w-[1240px] + px-16 と一致）。
+   --inset は色ブロックの中だけで使う深い余白。ブロックが額縁になるので、
+   ここは他セクションと揃えないほうが締まる。 */
+.about{
+  --gutter:max(64px,calc((100vw - 1240px) / 2 + 64px));
+  --inset:calc(var(--gutter) + 110px);
+  padding:70px 0 130px;overflow:hidden;
+}
+@media(max-width:900px){.about{--inset:calc(var(--gutter) + 40px)}}
+@media(max-width:767px){.about{--gutter:24px;--inset:24px}}
+
+/* 背景は画面いっぱいに暴れさせる。左端0から始まり、右は130px残すだけ。
+   丸めるのは右上だけで、他の角は立てたまま */
+.about-panel{
+  position:relative;
+  background:var(--sage-mid);
+  border-radius:0 200px 0 0;
+  width:calc(100% - 130px);
+  padding:88px 0 84px;
+}
+/* 中身はパネル独自の深い余白から。写真はパネルの右端をまたいで画面外へ切れる */
+.about-grid{
+  display:grid;
+  grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
+  gap:64px;
+  align-items:center;
+  padding-left:var(--inset);
+  width:calc(100% + 190px);
+}
+.about-inner{max-width:560px}
+.about-lead{font-family:var(--serif);font-size:38px;line-height:1.35;letter-spacing:-.02em;margin:22px 0 20px}
+.about-body{font-size:15px;line-height:2.1;color:#3a382e;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.tag{background:var(--sage-pale);color:#33452a;font-size:12px;padding:7px 16px;border-radius:999px}
+
+/* 写真：パネルの右端をまたいで置く */
+.about-photo{
+  height:500px;
+  border-radius:8px;overflow:hidden;background:#cbc7b6;
+}
+.about-photo img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:1180px){
+  .about-panel{width:calc(100% - 80px);border-radius:0 150px 0 0;padding:64px 0 60px}
+  .about-grid{gap:48px;width:calc(100% + 130px)}
+  .about-photo{height:420px}
+}
+@media(max-width:900px){
+  .about-panel{border-radius:0 96px 0 0;width:100%;padding:44px 0 40px}
+  .about-grid{grid-template-columns:1fr;width:100%;padding-right:var(--inset);gap:32px}
+  .about-lead{font-size:28px}
+  .about-photo{height:300px}
+}
+
+/* ── Works ────────────────────────────────
+   2カラムのずらし。右列を1枚分下げる。 */
+.works{background:var(--cream-2);padding:96px 0 140px}
+.works-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap}
+.works-title{font-family:var(--serif);font-size:92px;line-height:.92;letter-spacing:-.05em;margin-top:28px}
+.works-title em{font-style:italic}
+.works-aside{max-width:320px}
+.works-aside p{font-size:13px;line-height:2;color:var(--muted);margin-bottom:22px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(74,94,62,.35);color:var(--sage);font-size:12px;padding:11px 22px;border-radius:999px;text-decoration:none;transition:background .3s,color .3s}
+.pill:hover{background:var(--sage);color:var(--cream)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:56px 56px;margin-top:72px}
+.grid>*:nth-child(even){margin-top:84px}
+@media(max-width:900px){
+  .works-title{font-size:48px}
+  .grid{grid-template-columns:1fr;gap:56px}
+  .grid>*:nth-child(even){margin-top:0}
+}
+
+.work{text-decoration:none;color:inherit;display:block}
+/* カードの高さはここ1行で決まる。4/5＝縦長、8/5＝横長。数字を上げるほど低くなる */
+.work-media{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:8/5;background:#ddd8c8}
+.work-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.work:hover .work-media img{transform:scale(1.04)}
+/* ホバーで出る丸い矢印 */
+.work-go{
+  position:absolute;top:16px;right:16px;
+  width:46px;height:46px;border-radius:50%;
+  background:var(--sage);color:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(.8) translate(-4px,4px);
+  transition:opacity .35s,transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.work-go svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.work:hover .work-go{opacity:1;transform:scale(1) translate(0,0)}
+.work-meta{display:flex;justify-content:space-between;align-items:center;margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.work-meta .sage{color:var(--sage)}
+.work-name{font-family:var(--serif);font-size:27px;letter-spacing:-.03em;margin:8px 0 10px;line-height:1.2}
+.work-sum{font-size:13px;line-height:1.95;color:var(--muted);padding-bottom:20px;border-bottom:1px solid rgba(43,40,32,.14)}
+@media(max-width:900px){.work-name{font-size:24px}}
+
+/* Instagram：仮置き。正方形を横に並べただけ。見せ方は後で決める */
+.feed{position:absolute;inset:0;background:#e8e3d6;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 22px}
+.feed div{aspect-ratio:1;height:62%;border-radius:4px;flex:none}
+
+/* ── 作品詳細：デバイス表示 ─────────────────
+   実機フレームは使わず角丸の板だけ。PCにSPを重ねる。 */
+.detail{padding:110px 0 130px}
+.detail-head{max-width:720px}
+.detail-title{font-family:var(--serif);font-size:56px;letter-spacing:-.04em;line-height:1.1;margin:18px 0 22px}
+.detail-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.detail-tags span{border:1px solid rgba(74,94,62,.3);color:var(--sage);font-size:12px;padding:6px 15px;border-radius:999px}
+.detail-body{font-size:15px;line-height:2.1;color:#3a382e}
+.ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.btn-solid{display:inline-flex;align-items:center;gap:9px;background:var(--sage);color:var(--cream);font-size:13px;padding:14px 28px;border-radius:999px;text-decoration:none;transition:background .3s}
+.btn-solid:hover{background:#3b4d31}
+.btn-ghost{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(74,94,62,.35);color:var(--sage);font-size:13px;padding:14px 28px;border-radius:999px;text-decoration:none;transition:background .3s,color .3s}
+.btn-ghost:hover{background:var(--sage);color:var(--cream)}
+@media(max-width:900px){.detail-title{font-size:34px}}
+
+.devices{position:relative;margin-top:72px;padding-bottom:60px}
+.dev-pc{
+  width:88%;border-radius:8px;overflow:hidden;background:#fff;
+  border:1px solid rgba(43,40,32,.12);
+  box-shadow:0 30px 70px rgba(43,40,32,.13);
+}
+.dev-chrome{height:34px;background:#f2efe6;border-bottom:1px solid rgba(43,40,32,.09);display:flex;align-items:center;padding:0 14px;gap:6px}
+.dev-chrome i{width:9px;height:9px;border-radius:50%;background:#d5d0c0;display:block}
+.dev-scroll{height:460px;overflow:hidden;position:relative}
+.dev-scroll img{width:100%;display:block;animation:creep 16s ease-in-out infinite alternate}
+@keyframes creep{from{transform:translateY(0)}to{transform:translateY(-42%)}}
+
+.dev-sp{
+  position:absolute;right:0;bottom:0;
+  width:210px;border-radius:12px;overflow:hidden;background:#fff;
+  border:1px solid rgba(43,40,32,.12);
+  box-shadow:0 24px 60px rgba(43,40,32,.18);
+}
+.dev-sp .dev-scroll{height:380px}
+.dev-sp .dev-scroll img{animation-duration:20s}
+@media(max-width:900px){
+  .dev-scroll{height:240px}
+  .dev-sp{position:relative;width:170px;margin:-40px 0 0 auto;right:auto;bottom:auto}
+  .dev-sp .dev-scroll{height:280px}
+}
+footer{padding:70px 24px 90px;text-align:center;color:var(--muted);font-size:12px}
+
+/* ── スクロールでふわっと出す ─────────────────
+   .reveal を付けた要素が画面に入ったら .in が付く。
+   --d で1つずつ遅らせる（ずらしグリッドは右列を少し遅く）。 */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .dev-scroll img{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div class="note">MOCK — 色とフォントは既存サイトの値。写真・作品名・文章はすべて仮。</div>
+
+<nav>
+  <span class="logo">Misa.</span>
+  <div class="navlinks">
+    <span>わたしについて</span><span>できること</span><span>つくったもの</span><span>ご相談</span>
+    <span class="lang">JA / EN</span>
+  </div>
+</nav>
+
+<!-- About -->
+<section class="about">
+  <div>
+    <div class="about-panel">
+     <div class="about-grid">
+      <div class="about-inner">
+        <p class="eyebrow">01 / わたしについて</p>
+        <h2 class="about-lead">ちゃんと伝わる、<br>やさしいWebを。</h2>
+        <p class="about-body">歯科衛生士として5年半働いたあと、オーストラリアでWebを学びました。医療や小さなお店の現場を知っているので、「何を伝えたいか」のところから一緒に考えられます。</p>
+        <p class="about-body">デザインから実装、公開したあとの更新まで、ひとりで通してお任せいただけます。</p>
+        <div class="tags">
+          <span class="tag">歯科衛生士 5年半</span>
+          <span class="tag">豪州在住・日英対応</span>
+          <span class="tag">制作から運用まで</span>
+        </div>
+      </div>
+      <div class="about-photo">
+        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=900&q=80" alt="仮：作業中の手元">
+      </div>
+     </div>
+    </div>
+  </div>
+</section>
+
+<!-- Works -->
+<section class="works">
+  <div class="wrap">
+    <div class="works-head">
+      <div>
+        <p class="eyebrow">03 / つくったもの</p>
+        <h2 class="works-title">最近つくった<br><em>もの。</em></h2>
+      </div>
+      <div class="works-aside">
+        <p>小さなビジネス、クリニック、ブランド。それぞれ違う問いに向き合った仕事です。</p>
+        <a class="pill" href="#">作品一覧を見る ↗</a>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <a class="work" href="#detail">
+        <div class="work-media">
+          <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=900&q=80" alt="">
+          <div class="work-go"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+        </div>
+        <div class="work-meta"><span><span class="sage">01</span> / Web制作 / 医療</span><span>↗</span></div>
+        <h3 class="work-name">こもれび歯科クリニック</h3>
+        <p class="work-sum">不安を抱えて訪れる人のために、やさしい導線と光のある色を設計しました。</p>
+      </a>
+
+      <a class="work" href="#detail">
+        <div class="work-media">
+          <div class="feed">
+            <div style="background:#cfd8c4"></div><div style="background:#e6ddd0"></div>
+            <div style="background:#b9c8ad"></div><div style="background:#ddd5c6"></div>
+          </div>
+          <div class="work-go"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+        </div>
+        <div class="work-meta"><span><span class="sage">02</span> / Instagram / 矯正歯科</span><span>↗</span></div>
+        <h3 class="work-name">天神AN矯正歯科</h3>
+        <p class="work-sum">投稿の軸づくりからテンプレート設計まで。フォロワー1,200→4,800。</p>
+      </a>
+
+      <a class="work" href="#detail">
+        <div class="work-media">
+          <img src="https://images.unsplash.com/photo-1481487196290-c152efe083f5?w=900&q=80" alt="">
+          <div class="work-go"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+        </div>
+        <div class="work-meta"><span><span class="sage">03</span> / LP制作 / サロン</span><span>↗</span></div>
+        <h3 class="work-name">Mori habit tracker</h3>
+        <p class="work-sum">申し込みまでの迷いを減らす、一枚のページ。</p>
+      </a>
+
+      <a class="work" href="#detail">
+        <div class="work-media">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&q=80" alt="">
+          <div class="work-go"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+        </div>
+        <div class="work-meta"><span><span class="sage">04</span> / Web制作 / 教育</span><span>↗</span></div>
+        <h3 class="work-name">みらい学習教室</h3>
+        <p class="work-sum">保護者が3分で判断できるよう、料金と実績を先に出す構成にしました。</p>
+      </a>
+
+      <a class="work" href="#detail">
+        <div class="work-media">
+          <div class="feed">
+            <div style="background:#e6ddd0"></div><div style="background:#b9c8ad"></div>
+            <div style="background:#ddd5c6"></div><div style="background:#c6d2b9"></div>
+          </div>
+          <div class="work-go"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+        </div>
+        <div class="work-meta"><span><span class="sage">05</span> / Instagram / カフェ</span><span>↗</span></div>
+        <h3 class="work-name">ひなたベーカリー</h3>
+        <p class="work-sum">写真の撮り方から整えて、投稿を続けられる形にしました。</p>
+      </a>
+
+      <a class="work" href="#detail">
+        <div class="work-media">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=900&q=80" alt="">
+          <div class="work-go"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+        </div>
+        <div class="work-meta"><span><span class="sage">06</span> / Frontend / React</span><span>↗</span></div>
+        <h3 class="work-name">TripTrail</h3>
+        <p class="work-sum">旅程を自動で組み立てる、Express.js と OpenAI のアプリ。</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- 作品詳細 -->
+<section class="detail" id="detail">
+  <div class="wrap">
+    <div class="detail-head">
+      <p class="eyebrow">WORK / 01</p>
+      <h2 class="detail-title">こもれび歯科クリニック</h2>
+      <div class="detail-tags">
+        <span>HP制作</span><span>デザイン</span><span>コーディング</span>
+        <span>お問い合わせフォーム</span><span>レスポンシブ対応</span>
+      </div>
+      <p class="detail-body">歯科に不安のある方が「ここなら大丈夫かもしれない」と思えることを目標にしたサイトです。光の差し込む院内の写真をひらき、予約までの手順を3ステップに整理しました。公開から3ヶ月でWeb経由の予約が40%増えています。</p>
+      <div class="ctas">
+        <a class="btn-solid" href="#">似た制作を相談する</a>
+        <a class="btn-ghost" href="#">サイトを見る ↗</a>
+      </div>
+    </div>
+
+    <div class="devices">
+      <div class="dev-pc">
+        <div class="dev-chrome"><i></i><i></i><i></i></div>
+        <div class="dev-scroll">
+          <img src="https://images.unsplash.com/photo-1629909613654-28e6573c8f51?w=1600&q=80" alt="">
+        </div>
+      </div>
+      <div class="dev-sp">
+        <div class="dev-scroll">
+          <img src="https://images.unsplash.com/photo-1588776818647-5132b6415323?w=700&q=80" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>MOCK — 検討用。実装前の確認に使う。</footer>
+
+<script>
+/* ふわっと出す対象をここで指定する。
+   Worksのカードだけ、右列を .09s 遅らせて左右で時間差をつけている。 */
+document.querySelectorAll('.about-panel, .works-head > *, .work, .detail-head, .devices')
+  .forEach((el) => el.classList.add('reveal'));
+
+document.querySelectorAll('.grid > .work').forEach((el, i) => {
+  el.style.setProperty('--d', (i % 2 ? 0.09 : 0) + 's');
+});
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    io.unobserve(e.target);   /* 一度出たら戻さない */
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+
+</body>
+</html>

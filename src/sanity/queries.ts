@@ -26,7 +26,9 @@ type RawProject = {
   outcomeJa?: string
   outcomeEn?: string
   thumbnail?: unknown
+  mobileShot?: unknown
   gallery?: unknown[]
+  liveUrl?: string
 }
 
 // GROQ：欲しい項目だけを指定して取り出す。SQLのSELECTに近い
@@ -38,7 +40,7 @@ const FIELDS = `
   "tags": tags[]->{ labelJa, labelEn },
   client, role, year, status, showIn, featured,
   challengeJa, challengeEn, approachJa, approachEn, outcomeJa, outcomeEn,
-  thumbnail, gallery
+  thumbnail, mobileShot, gallery, liveUrl
 `
 
 function toWork(p: RawProject): Work {
@@ -69,6 +71,8 @@ function toWork(p: RawProject): Work {
     outcome: p.outcomeJa ?? '',
     outcomeEn: p.outcomeEn ?? '',
     gallery: (p.gallery ?? []).map((g) => img(g, 1400)).filter(Boolean),
+    liveUrl: p.liveUrl,
+    mobileShot: p.mobileShot ? img(p.mobileShot, 700) : undefined,
   }
 }
 

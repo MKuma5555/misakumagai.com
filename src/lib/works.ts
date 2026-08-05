@@ -23,6 +23,10 @@ export type Work = {
   outcome: string;
   outcomeEn: string;
   gallery: string[];
+  /** 公開URL。無い案件（NDA・終了済み）もあるので任意 */
+  liveUrl?: string;
+  /** 詳細ページでPCに重ねるスマホ表示。無ければ枠ごと出さない */
+  mobileShot?: string;
 };
 
 export const works: Work[] = [
