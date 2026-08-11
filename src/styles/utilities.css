@@ -1,0 +1,44 @@
+/* ============================================================
+   使い回すクラス。
+
+   @layer components は使わない。前のプロジェクトで2回書いて
+   2回とも効かなかった。v4 では @utility が正しいやり方で、
+   これなら Tailwind が正しい層に入れてくれるので md: なども効く。
+
+   ここに置くのは「2箇所以上で使うもの」だけ。
+   1箇所しか使わない見た目はコンポーネント側の class で完結させる。
+   緩めるとまた1枚の巨大ファイルに戻る。
+   ============================================================ */
+
+/* 通常セクションの横幅と左右余白。
+   clamp なのでメディアクエリなしで 24px → 64px まで滑らかに変わる */
+@utility wrapper {
+  margin-inline: auto;
+  max-width: 1240px;
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
+}
+
+/* 作品詳細だけ狭くする。読み物なので1行を短く */
+@utility wrapper-narrow {
+  margin-inline: auto;
+  max-width: 1080px;
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
+}
+
+/* セクションの上下余白。全セクションで揃える */
+@utility section-y {
+  padding-block: clamp(4.5rem, 10vw, 8.5rem);
+}
+
+/* 髪の毛みたいに細い区切り線。border を直接書かずこれを使う */
+@utility hairline {
+  border-top: 1px solid var(--color-line);
+}
+
+/* 流れる帯の中身。6組並べる前提。
+   幅は 600%（6組）で、animation 名は使う側で指定する */
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}

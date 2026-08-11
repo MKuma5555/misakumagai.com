@@ -1,0 +1,13 @@
+/* ============================================================
+   ここには中身を書かない。読み込む順番を決めるのが仕事。
+
+   @import "tailwindcss" は必ず一番上。
+   ここが崩れると全部崩れる。
+   ============================================================ */
+
+@import "tailwindcss";
+
+@import "../styles/theme.css";
+@import "../styles/base.css";
+@import "../styles/motion.css";
+@import "../styles/utilities.css";

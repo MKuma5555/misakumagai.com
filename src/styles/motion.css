@@ -1,0 +1,112 @@
+/* ============================================================
+   動き。@keyframes と、動きを止める設定。
+
+   reduced-motion はここに1箇所だけ書く。
+   各コンポーネントに書くと必ず書き忘れが出る。
+   ============================================================ */
+
+/* --- 現れる ------------------------------------------------ */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* --- 流れる帯 ----------------------------------------------
+   同じ列を6組並べて「1組ぶん」だけ動かす。
+   組数を変えたら 16.6667%（= 100/6）も直すこと。
+   ここがズレると継ぎ目が見える。 */
+
+@keyframes marquee-left {
+  to {
+    transform: translateX(-16.6667%);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(-16.6667%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* --- 雲 ----------------------------------------------------
+   Loading で4枚が折り重なった状態から掃けていく。
+   手前ほど大きく速く、奥ほど小さくゆっくり動かすと奥行きが出る。
+   実際の距離と速さは各雲のインラインスタイルで渡す。 */
+
+@keyframes cloud-out-left {
+  to {
+    opacity: 0;
+    transform: translateX(var(--cloud-x, -40%)) scale(var(--cloud-scale, 1.08));
+  }
+}
+
+@keyframes cloud-out-right {
+  to {
+    opacity: 0;
+    transform: translateX(var(--cloud-x, 40%)) scale(var(--cloud-scale, 1.08));
+  }
+}
+
+@keyframes cloud-out-up {
+  to {
+    opacity: 0;
+    transform: translateY(var(--cloud-y, -30%)) scale(var(--cloud-scale, 1.05));
+  }
+}
+
+@keyframes cloud-out-down {
+  to {
+    opacity: 0;
+    transform: translateY(var(--cloud-y, 30%)) scale(var(--cloud-scale, 1.05));
+  }
+}
+
+/* ゆっくり漂う。Loading 以外で背景に浮かべるとき用 */
+@keyframes cloud-float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(2%, -1.5%);
+  }
+}
+
+/* ============================================================
+   動きを減らす設定の人には止める。
+   OS の「視差効果を減らす」を見ている。全部ここで面倒を見る。
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
