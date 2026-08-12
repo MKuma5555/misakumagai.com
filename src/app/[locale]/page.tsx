@@ -5,7 +5,7 @@ import { localeAlternates } from '@/lib/metadata'
 
 import HeroSection from '@/components/sections/HeroSection'
 import SkillsSection from '@/components/sections/SkillsSection'
-import AboutSection from '@/components/sections/AboutSection'
+import AboutSection from '@/components/sections/aboutSection/AboutSection'
 import WorksSection from '@/components/sections/WorksSection'
 import FlowSection from '@/components/sections/FlowSection'
 import ContactSection from '@/components/sections/ContactSection'
