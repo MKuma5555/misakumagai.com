@@ -1,11 +1,15 @@
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { isLocale, type Locale } from '@/lib/i18n'
 import { localeAlternates } from '@/lib/metadata'
 import WorksList from '@/components/works/WorksList'
 
-/* 作品一覧。タグでの絞り込みはここだけ。
-   トップのスライダーには付けない（自動再生と絞り込みは相性が悪い）。 */
+/* 作品一覧。絞り込みはここだけ。
+   トップのスライダーには付けない（自動再生と絞り込みは相性が悪い）。
+
+   WorksList は URL の ?tag= を読むために useSearchParams を使う。
+   Next.js では <Suspense> で囲まないとビルドで警告が出るので、ここで囲む。 */
 
 export const revalidate = 60
 
@@ -32,7 +36,9 @@ export default async function WorksPage({
 
   return (
     <main className="section-y wrapper">
-      <WorksList locale={locale} />
+      <Suspense fallback={null}>
+        <WorksList locale={locale} />
+      </Suspense>
     </main>
   )
 }

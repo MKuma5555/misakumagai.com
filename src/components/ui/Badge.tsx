@@ -14,7 +14,8 @@ export default function Badge({
     <span
       className={cx(
         'rounded-pill px-3 py-1 text-xs',
-        tone === 'amber' ? 'bg-amber text-ink' : 'border border-line text-muted',
+        // quiet も地を塗る。写真の上に置くので、透明だと読めない
+        tone === 'amber' ? 'bg-amber text-ink' : 'border border-line bg-cream text-ink',
       )}
     >
       {children}
