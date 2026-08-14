@@ -8,14 +8,14 @@ import SkillsSection from '@/components/sections/SkillsSection'
 import AboutSection from '@/components/sections/aboutSection/AboutSection'
 import WorksSection from '@/components/sections/WorksSection'
 import FlowSection from '@/components/sections/FlowSection'
-import ContactSection from '@/components/sections/ContactSection'
+import ContactBand from '@/components/sections/ContactBand'
 import ClosingNote from '@/components/sections/ClosingNote'
 
 /* トップ。セクションを上から順に並べるだけの場所。
    見た目はそれぞれのセクションが持つ。ここには書かない。
 
    並びは Figma の 2026.8 のフレーム順に合わせてある。
-   FV → About me → Skills → Works → Flow → Contact
+   FV → About me → Skills → Works → Flow → Contact(帯)
    Journey と Likes は About me の中。別セクションに割らない。
 
    ja と en は翻訳ではなく別編集。目的が違うので、
@@ -55,7 +55,7 @@ export default async function Home({
       <SkillsSection locale={locale} />
       <WorksSection locale={locale} />
       {locale === 'ja' && <FlowSection locale={locale} />}
-      <ContactSection locale={locale} />
+      <ContactBand locale={locale} />
       <ClosingNote locale={locale} />
     </main>
   )

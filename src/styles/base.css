@@ -13,6 +13,17 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth; /* motion.css で reduce 時に切る */
+
+    /* Skills のロゴのズレ幅の倍率。
+       画面が狭いと同じズレでも目立ちすぎて、ガタガタに見える。
+       スマホでは半分にする。 */
+    --jitter: 1;
+  }
+
+  @media (width < 40rem) {
+    html {
+      --jitter: 0.5;
+    }
   }
 
   body {

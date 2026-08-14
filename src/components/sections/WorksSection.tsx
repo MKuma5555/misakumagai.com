@@ -22,7 +22,13 @@ export default function WorksSection({ locale }: { locale: Locale }) {
   const items = works.filter((w) => w.featured && w.showIn.includes(locale)).slice(0, 6)
 
   return (
-    <section id="works" className="relative bg-sand">
+    /* my-10 / md:my-20 は波の分の場所取り。
+       波は absolute でセクションの外に出ているので、そのままだと
+       上下の要素にとっては「無いもの」になり、重なってしまう。
+       波の高さ（h-10 / md:h-20）と同じだけ余白を取れば、
+       下に何が来ても重ならない。英語版は Flow が無く Contact が
+       すぐ下に来るので、これが無いと帯に波が乗る。 */
+    <section id="works" className="relative my-10 bg-sand md:my-20">
       <SectionSeparator kind="wave" position="top" className="text-sand" />
 
       <div className="py-[clamp(2.5rem,5vw,4.5rem)]">

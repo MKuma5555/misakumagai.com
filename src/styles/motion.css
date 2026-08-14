@@ -47,6 +47,38 @@
   }
 }
 
+/* Skills のロゴ。ホバーしている1枚だけ、ぐらぐら揺れ続ける。
+
+   1枚ずつ傾きと高さがズレているので、その値を CSS 変数で受け取り、
+   キーフレームの中でも保ったまま揺らす。
+   ここで var を使わずに rotate(0deg) と書くと、
+   ホバーした瞬間にズレが消えてカクッと跳ねる。
+
+   往復を4回にすると「ぐらぐら」、2回だと「かたむいた」になる。 */
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: translateY(calc(var(--dy) * var(--jitter)))
+      rotate(calc(var(--rot) * var(--jitter))) scale(1.04);
+  }
+  15% {
+    transform: translateY(calc(var(--dy) * var(--jitter)))
+      rotate(calc(var(--rot) * var(--jitter) - 9deg)) scale(1.08);
+  }
+  35% {
+    transform: translateY(calc(var(--dy) * var(--jitter)))
+      rotate(calc(var(--rot) * var(--jitter) + 7deg)) scale(1.08);
+  }
+  55% {
+    transform: translateY(calc(var(--dy) * var(--jitter)))
+      rotate(calc(var(--rot) * var(--jitter) - 6deg)) scale(1.07);
+  }
+  75% {
+    transform: translateY(calc(var(--dy) * var(--jitter)))
+      rotate(calc(var(--rot) * var(--jitter) + 4deg)) scale(1.06);
+  }
+}
+
 /* --- 雲 ----------------------------------------------------
    Loading で4枚が折り重なった状態から掃けていく。
    手前ほど大きく速く、奥ほど小さくゆっくり動かすと奥行きが出る。

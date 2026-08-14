@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { isLocale, type Locale } from '@/lib/i18n'
 import { localeAlternates } from '@/lib/metadata'
-import ContactSection from '@/components/sections/ContactSection'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
+import ContactForm from '@/components/contact/ContactForm'
 
-/* 問い合わせ。中身はトップの ContactSection と同じものを使い回す。
-   ja は LINE あり、en は Contact のみ。出し分けはセクション側。 */
+/* 問い合わせページ。フォームはここだけに置く。
+   トップは sections/ContactBand.tsx が「/contact へ送るだけ」の帯を出す。 */
 
 export async function generateMetadata({
   params,
@@ -30,7 +32,17 @@ export default async function ContactPage({
 
   return (
     <main>
-      <ContactSection locale={locale} />
+      <div className="wrapper pt-28 md:pt-32">
+        <Link
+          href={`/${locale}`}
+          className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
+        >
+          <ArrowLeft size={16} />
+          {locale === 'en' ? 'Back home' : 'ホームに戻る'}
+        </Link>
+      </div>
+
+      <ContactForm locale={locale} />
     </main>
   )
 }
