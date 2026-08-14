@@ -16,11 +16,13 @@ import ClosingNote from '@/components/sections/ClosingNote'
 
    並びは Figma の 2026.8 のフレーム順に合わせてある。
    FV → About me → Skills → Works → Flow → Contact(帯)
+
+   Flow は ja と en で中身が別。ja は制作の流れ、en は仕事の進め方。
+   ja をそのまま英訳すると「案件を受ける人」に読まれるため。
    Journey と Likes は About me の中。別セクションに割らない。
 
    ja と en は翻訳ではなく別編集。目的が違うので、
-   出し分けは各セクションの中で locale を見て行う。
-   Flow は ja だけ（案件獲得の導線なので en には出さない）。 */
+   出し分けは各セクションの中で locale を見て行う。 */
 
 export const revalidate = 60
 
@@ -54,7 +56,7 @@ export default async function Home({
       <AboutSection locale={locale} />
       <SkillsSection locale={locale} />
       <WorksSection locale={locale} />
-      {locale === 'ja' && <FlowSection locale={locale} />}
+      <FlowSection locale={locale} />
       <ContactBand locale={locale} />
       <ClosingNote locale={locale} />
     </main>
