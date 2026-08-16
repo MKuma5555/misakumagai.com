@@ -6,6 +6,7 @@ import SiteNav from '@/components/layout/SiteNav'
 import SiteFooter from '@/components/layout/SiteFooter'
 import Loading from '@/components/layout/Loading'
 import BackToTop from '@/components/layout/BackToTop'
+import FloatingCta from '@/components/layout/FloatingCta'
 import '../globals.css'
 
 /* これがルートレイアウト。app/layout.tsx は置かない。
@@ -39,6 +40,7 @@ export default async function LocaleLayout({
         <SiteNav locale={locale} />
         {children}
         <SiteFooter locale={locale} />
+        <FloatingCta locale={locale} />
         <BackToTop />
       </body>
     </html>

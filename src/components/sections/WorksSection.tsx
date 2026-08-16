@@ -18,8 +18,11 @@ import { works } from '@/content/works'
 export default function WorksSection({ locale }: { locale: Locale }) {
   const en = locale === 'en'
 
-  // トップに出すのは featured の6件だけ。その言語で出すものに絞る
-  const items = works.filter((w) => w.featured && w.showIn.includes(locale)).slice(0, 6)
+  /* トップに出すのは featured が付いているものだけ。
+     件数はコードではなく works.ts 側で決める。
+     6件見せたければ6件に featured: true を付ける。
+     ここで slice すると、付けたのに出ない作品が黙って生まれる。 */
+  const items = works.filter((w) => w.featured && w.showIn.includes(locale))
 
   return (
     /* my-10 / md:my-20 は波の分の場所取り。
