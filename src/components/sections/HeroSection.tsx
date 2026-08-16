@@ -186,7 +186,7 @@ function WorksBadge({
             style={{ transformOrigin: '50% 50%' }}
             className="animate-[ring-spin_16s_linear_infinite] [animation-play-state:paused] group-hover:[animation-play-state:running] group-focus-visible:[animation-play-state:running]"
           >
-            <text fontSize="8.6" letterSpacing="1.6" className="fill-olive-text font-mono">
+            <text fontSize="8.6" letterSpacing="1.6" className="fill-amber font-mono">
               <textPath href="#hero-ring">{ring + ring}</textPath>
             </text>
           </g>
@@ -194,7 +194,7 @@ function WorksBadge({
 
         {/* 真ん中の丸。外径の45%。SVGの中に入れず上に重ねる —
             SVG内だと文字の大きさに引きずられて調整が面倒になる */}
-        <span className="absolute left-1/2 top-1/2 flex h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-olive-deep text-cream transition-transform duration-300 group-hover:scale-110">
+        <span className="absolute left-1/2 top-1/2 flex h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-amber text-cream transition-transform duration-300 group-hover:scale-110">
           <ArrowUpRight size={20} />
         </span>
       </div>

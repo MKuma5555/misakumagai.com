@@ -5,7 +5,6 @@ import { locales, isLocale } from '@/lib/i18n'
 import SiteNav from '@/components/layout/SiteNav'
 import SiteFooter from '@/components/layout/SiteFooter'
 import Loading from '@/components/layout/Loading'
-import BackToTop from '@/components/layout/BackToTop'
 import FloatingCta from '@/components/layout/FloatingCta'
 import ClosingNote from '@/components/sections/ClosingNote'
 import '../globals.css'
@@ -60,8 +59,9 @@ export default async function LocaleLayout({
           <ClosingNote locale={locale} />
         </section>
 
+        {/* 「ページの先頭へ」はフッターの中にある。
+            右下は FloatingCta が使っているので、浮くボタンは作らない */}
         <FloatingCta locale={locale} />
-        <BackToTop />
       </body>
     </html>
   )

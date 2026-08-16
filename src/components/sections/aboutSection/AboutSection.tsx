@@ -85,7 +85,7 @@ export default function AboutSection({ locale }: { locale: Locale }) {
           transition={{
             duration: 0.6,
           }}
-          className="absolute inset-0 rounded-tr-[48px] md:right-[15%] md:rounded-tr-[80px]"
+          className={`absolute inset-0 rounded-tr-[48px] md:right-[15%] md:rounded-tr-[80px] ${current.bgColor}`}  
           aria-hidden
         />
 

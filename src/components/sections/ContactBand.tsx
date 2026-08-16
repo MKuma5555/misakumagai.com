@@ -53,7 +53,7 @@ export default function ContactBand({ locale }: { locale: Locale }) {
             <span className="text-4xl tracking-[.04em] md:text-5xl">
               {en ? 'Get in touch' : 'お問い合わせ'}
             </span>
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-olive-deep text-cream transition-transform duration-300 group-hover:translate-x-1">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-amber text-cream transition-transform duration-300 group-hover:translate-x-1">
               <ArrowRight size={18} />
             </span>
           </Link>

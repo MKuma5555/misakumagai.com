@@ -43,7 +43,7 @@ export default function FloatingCta({ locale }: { locale: Locale }) {
   return (
     <Link
       href={href}
-      className={`fixed right-5 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 inline-flex items-center gap-2.5 rounded-pill bg-olive-deep px-5 py-3.5 text-[13px] text-cream shadow-[0_8px_22px_rgba(63,59,48,.26)] transition-all duration-300 hover:-translate-y-1 md:bottom-8 ${
+      className={`fixed right-5 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 inline-flex items-center gap-2.5 rounded-pill bg-olive px-5 py-3.5 text-[13px] text-cream shadow-[0_8px_22px_rgba(63,59,48,.26)] transition-all duration-300 hover:-translate-y-1 md:bottom-8 ${
         show ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'
       }`}
     >

@@ -26,7 +26,7 @@ function ServiceItem({ service }: { service: Service }) {
   const Icon = ICON[service.icon]
   return (
     <li className="flex gap-4">
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-olive-deep text-cream">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-yellow text-cream">
         <Icon size={20} strokeWidth={1.6} />
       </span>
       <div>
