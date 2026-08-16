@@ -27,6 +27,7 @@ import { useState } from 'react'
 import type { Locale } from '@/lib/i18n'
 import { AnimatePresence, motion } from 'motion/react'
 import { aboutData } from './aboutData'
+import SectionTitle from '@/components/ui/SectionTitle'
 
 // locale は今は使っていない。aboutData を ja/en に分けるときに使う
 export default function AboutSection({ locale }: { locale: Locale }) {
@@ -71,7 +72,8 @@ export default function AboutSection({ locale }: { locale: Locale }) {
   }
 
   return (
-    <section>
+    /* id はフッターとナビの「わたしについて」の飛び先。無いと何も起きない */
+    <section id="about">
       {/* SPは縦積み、PC(md以上)は色面の上に写真を重ねる。
           並び順は order で入れ替える。HTMLの順序は変えない —
           読み上げソフトと検索エンジンには文章の順序で届いてほしいため。 */}
@@ -104,7 +106,15 @@ export default function AboutSection({ locale }: { locale: Locale }) {
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
-              <h2 className="mb-5 text-3xl md:mb-8 md:text-5xl">{current.title}</h2>
+              {/* 番号はタブが変わっても 01 のまま。セクションの通し番号であって、
+                  タブの番号ではない。タブ側の番号（01/02/03）とは別物。 */}
+              <SectionTitle no="01" className="mb-6 md:mb-8">
+                {current.label}
+              </SectionTitle>
+
+              {/* 章の見出し。上に h2 が来たので h3 にしてある。
+                  見た目はこちらのほうが大きいが、順番は入れ子のとおりにする */}
+              <h3 className="mb-5 text-3xl md:mb-8 md:text-5xl">{current.title}</h3>
 
               <p className="max-w-lg leading-8">{current.description}</p>
             </motion.div>
@@ -152,9 +162,9 @@ export default function AboutSection({ locale }: { locale: Locale }) {
                 aria-current={activeTab === index ? 'true' : undefined}
                 className="group flex-1 text-left md:flex-none"
               >
-                <p className="mb-2 text-[10px] whitespace-nowrap md:text-xs">
-                  {tab.number}. {tab.label}
-                </p>
+                {/* 番号は出さない。見出し側の 01 と、写真の上の番号と、
+                    ここと、3か所に数字が並ぶと何の数字か分からなくなる */}
+                <p className="mb-2 text-[10px] whitespace-nowrap md:text-xs">{tab.label}</p>
 
                 <div className="relative h-[3px] w-full overflow-hidden rounded-full bg-neutral-300 md:w-20">
                   {activeTab === index && (

@@ -50,10 +50,19 @@
   --color-line: #dcc8b4;
 
   /* --- フォント -------------------------------------------
-     4種まで。増やさない。
-     和欧混植は「欧文を先、和文を後」に並べると文字ごとに拾ってくれる。 */
+     いまは5種。和欧混植は「欧文を先、和文を後」に並べると
+     ブラウザが文字ごとに拾ってくれる。 */
 
-  --font-serif: var(--font-garamond), var(--font-shippori), Georgia, serif;
+  /* display  見出し。欧文 Quicksand ＋ 和文 Zen Maru
+     hero     FVの「Hello, I'm Misa.」だけ。欧文しか無いので他には使わない
+     sans     本文
+     mono     数字・ラベル
+
+     「serif」という名前は捨てた。明朝ではなくなったので名前が嘘になる。 */
+  --font-display: var(--font-quicksand), var(--font-zen-maru), sans-serif;
+  /* Chewy に和文は無い。和文の受け皿を Zen Maru にしておかないと、
+     日本語のところだけ端末まかせのフォントになって浮く。 */
+  --font-hero: var(--font-chewy), var(--font-zen-maru), sans-serif;
   --font-sans: var(--font-zen), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 

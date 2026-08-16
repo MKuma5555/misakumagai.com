@@ -29,7 +29,9 @@ export default function ClosingNote({ locale }: { locale: Locale }) {
 
   return (
     <div className="wrapper text-center">
-      <p className="text-[clamp(1.5rem,4.4vw,3.25rem)] leading-[1.7] tracking-[.02em] text-ink">
+      {/* FV の Hello と同じ font-hero。入口と出口で書体を揃える。
+          英語は Chewy、日本語は Zen Maru に落ちる（Chewy に和文が無いため）。 */}
+      <p className="font-hero text-[clamp(1.5rem,4.4vw,3.25rem)] leading-[1.7] tracking-[.02em] text-ink">
         {lines.map((line) => (
           <span key={line} className="block">
             {line}

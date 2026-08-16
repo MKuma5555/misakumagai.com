@@ -1,3 +1,4 @@
+import SectionTitle from '@/components/ui/SectionTitle'
 import { Code2, LayoutTemplate, Monitor } from 'lucide-react'
 import { IconBrandInstagram } from '@tabler/icons-react'
 import type { Locale } from '@/lib/i18n'
@@ -44,8 +45,8 @@ export default function SkillsSection({ locale }: { locale: Locale }) {
   return (
     <section id="skills" className="section-y wrapper">
       <header>
-        <h2 className="text-3xl md:text-4xl">Skills</h2>
-        <p className="mt-2 text-muted">
+        <SectionTitle no="02">Skills</SectionTitle>
+        <p className="mt-4 text-muted">
           {en ? 'What I build with, and what I build' : '使える技術と、できること'}
         </p>
       </header>

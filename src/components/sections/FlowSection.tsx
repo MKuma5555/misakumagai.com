@@ -1,5 +1,6 @@
 'use client'
 
+import SectionTitle from '@/components/ui/SectionTitle'
 import { motion } from 'motion/react'
 import { Mail, MessagesSquare, NotebookPen, PenLine, Rocket, Search } from 'lucide-react'
 import type { Locale } from '@/lib/i18n'
@@ -34,7 +35,7 @@ const ICON = {
 function StepNumber({ item, className }: { item: FlowStep; className?: string }) {
   return (
     <div className={cx('bg-cream text-center', className)}>
-      <p className="font-serif text-2xl leading-none text-muted md:text-[28px]">{item.step}</p>
+      <p className="font-display text-2xl leading-none text-muted md:text-[28px]">{item.step}</p>
       <p className="mt-1 font-mono text-[10px] tracking-widest text-muted">step</p>
     </div>
   )
@@ -77,8 +78,15 @@ function Card({ item, index }: { item: FlowStep; index: number }) {
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: index * 0.13 }}
       className="pl-7 md:pl-0"
     >
-      {/* 番号はカードの中に置く。外に出すと、ホバーでカードだけが動いて番号が取り残される */}
-      <div className="relative rounded-[2rem] border border-line bg-cream p-6 pl-10 transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_16px_34px_rgba(63,59,48,.16)] md:rounded-[20px] md:px-7 md:pb-7 md:pl-7 md:pt-9">
+      {/* 番号はカードの中に置く。外に出すと、ホバーでカードだけが動いて番号が取り残される
+
+          h-full で、4枚のうち一番高いものに揃える。
+          grid の子（この li）は既に行の高さまで伸びているので、
+          中のカードに h-full を付ければそこまで広がる。
+          文章の長さが言語で変わっても、枠の高さは揃う。
+
+          flex-col にしてあるのは、下の注記を mt-auto で底に寄せるため。 */}
+      <div className="relative flex h-full flex-col rounded-[2rem] border border-line bg-cream p-6 pl-10 transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_16px_34px_rgba(63,59,48,.16)] md:rounded-[20px] md:px-7 md:pb-7 md:pl-7 md:pt-9">
         {/* SP の番号。カードの左枠に重なる位置 */}
         <StepNumber item={item} className="absolute -left-7 top-6 z-10 w-11 py-1 md:hidden" />
 
@@ -99,10 +107,12 @@ function Card({ item, index }: { item: FlowStep; index: number }) {
           <h3 className="text-lg md:text-center md:text-xl">{item.title}</h3>
         </div>
 
-        <p className="mt-4 text-sm leading-7 text-muted">{item.body}</p>
+        <p className="mb-5 mt-4 text-sm leading-7 text-muted">{item.body}</p>
 
+        {/* mt-auto で底に寄せる。高さを揃えたぶん、本文の下に余りが出るため。
+            余りを注記の上に集めると、区切り線の位置が4枚で揃う。 */}
         {item.note && (
-          <p className="mt-5 border-t border-line pt-4 text-center font-mono text-[11px] text-muted">
+          <p className="mt-auto border-t border-line pt-4 text-center font-mono text-[11px] text-muted">
             {item.note}
           </p>
         )}
@@ -118,8 +128,8 @@ export default function FlowSection({ locale }: { locale: Locale }) {
   return (
     <section id="flow" className="section-y wrapper">
       <header>
-        <h2 className="text-3xl md:text-4xl">{en ? 'How I work' : 'Flow'}</h2>
-        <p className="mt-2 text-muted">
+        <SectionTitle no="04">{en ? 'How I work' : 'Flow'}</SectionTitle>
+        <p className="mt-4 text-muted">
           {en ? 'What I keep in mind when I build' : 'ご相談から公開までの流れ'}
         </p>
       </header>

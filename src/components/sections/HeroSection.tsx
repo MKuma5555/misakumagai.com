@@ -96,7 +96,9 @@ export default function HeroSection({ locale }: { locale: Locale }) {
         {/* 文字。SP は左上、PC は左の真ん中。
             ナビのロゴが左上に固定で乗っているので、SP はその下から始める。 */}
         <div className="absolute left-[8%] top-[11%] w-[84%] md:left-[11%] md:top-[31%] md:w-[33%]">
-          <h1 className="text-[clamp(1.9rem,3.2vw,2.8rem)] leading-[1.15]">
+          {/* ここだけ Chewy。欧文しか持たない書体なので他では使わない。
+              日本語版でもこの1行は英語なので、そのまま出る。 */}
+          <h1 className="font-hero text-[clamp(2.7rem,4.6vw,4rem)] leading-[1.1]">
             Hello, I&apos;m Misa.
           </h1>
 
@@ -104,7 +106,7 @@ export default function HeroSection({ locale }: { locale: Locale }) {
             {t.role}
           </p>
 
-          <p className="mt-3 font-serif text-sm leading-[1.85] md:mt-4 md:text-[15px]">{t.tag}</p>
+          <p className="mt-3 font-display text-sm leading-[1.85] md:mt-4 md:text-[15px]">{t.tag}</p>
         </div>
 
         {/* Works への入口。文字と対角になる位置 */}

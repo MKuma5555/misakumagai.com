@@ -37,12 +37,12 @@
   }
 
   /* 見出しは行間を締める。太字にはしない —
-     明朝を太らせると和文が潰れるので、大きさで差をつける */
+     丸ゴシックは太らせると角が埋まって団子に見えるので、大きさで差をつける */
   h1,
   h2,
   h3,
   h4 {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-weight: 400;
     line-height: 1.45;
     letter-spacing: 0.04em;

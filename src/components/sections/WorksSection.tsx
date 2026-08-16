@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Locale } from '@/lib/i18n'
 import { GUTTER_LEFT } from '@/lib/utils'
 import SectionSeparator from '@/components/ui/SectionSeparator'
+import SectionTitle from '@/components/ui/SectionTitle'
 import WorksSlider from '@/components/works/WorksSlider'
 import { works } from '@/content/works'
 
@@ -36,9 +37,9 @@ export default function WorksSection({ locale }: { locale: Locale }) {
 
       <div className="py-[clamp(2.5rem,5vw,4.5rem)]">
         <div className={GUTTER_LEFT}>
-          <h2 className="mb-7 inline-block border-b border-ink/40 pb-1 text-2xl md:text-3xl">
-            <span className="font-mono text-base md:text-lg">03</span> Works
-          </h2>
+          <SectionTitle no="03" className="mb-7">
+            Works
+          </SectionTitle>
         </div>
 
         <WorksSlider works={items} locale={locale} />
