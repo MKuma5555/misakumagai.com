@@ -9,7 +9,6 @@ import AboutSection from '@/components/sections/aboutSection/AboutSection'
 import WorksSection from '@/components/sections/WorksSection'
 import FlowSection from '@/components/sections/FlowSection'
 import ContactBand from '@/components/sections/ContactBand'
-import ClosingNote from '@/components/sections/ClosingNote'
 
 /* トップ。セクションを上から順に並べるだけの場所。
    見た目はそれぞれのセクションが持つ。ここには書かない。
@@ -22,7 +21,11 @@ import ClosingNote from '@/components/sections/ClosingNote'
    Journey と Likes は About me の中。別セクションに割らない。
 
    ja と en は翻訳ではなく別編集。目的が違うので、
-   出し分けは各セクションの中で locale を見て行う。 */
+   出し分けは各セクションの中で locale を見て行う。
+
+   締めの一言（ClosingNote）はここには無い。
+   フッターより下に敷いて最後にめくれて出てくる作りなので、
+   layout.tsx 側が持っている。 */
 
 export const revalidate = 60
 
@@ -52,13 +55,19 @@ export default async function Home({
 
   return (
     <main>
+      {/* FV は画面に貼りついたまま（sticky）。下の箱が上にかぶさって隠す */}
       <HeroSection locale={locale} />
-      <AboutSection locale={locale} />
-      <SkillsSection locale={locale} />
-      <WorksSection locale={locale} />
-      <FlowSection locale={locale} />
-      <ContactBand locale={locale} />
-      <ClosingNote locale={locale} />
+
+      {/* かぶさる側。bg-cream は必須 —
+          ここが透けていると、下の FV が全セクションの裏に見えたままになる。
+          About は section 自身が背景を持っていないので、この箱が受け持つ。 */}
+      <div className="relative z-10 bg-cream">
+        <AboutSection locale={locale} />
+        <SkillsSection locale={locale} />
+        <WorksSection locale={locale} />
+        <FlowSection locale={locale} />
+        <ContactBand locale={locale} />
+      </div>
     </main>
   )
 }
