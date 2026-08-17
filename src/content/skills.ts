@@ -69,10 +69,12 @@ export const skills: Skill[] = [
    同じ内容を訳すと、どちらにも刺さらない。
    クライアントは「何を作ってくれるか」、採用担当は「何ができる人か」を見る。
 
-   ※ 文章は叩き台。Misa の言葉に置き換える予定。 */
+   en の見出しで謝らないこと。「Backend Understanding」のように
+   自信のなさを見出しに書くと、FV の「Full-stack Developer」と食い違い、
+   読む人は弱いほうを信じる。控えめさは本文の言い回しで出せる。 */
 
 export type Service = {
-  icon: 'monitor' | 'layout' | 'code' | 'instagram'
+  icon: 'monitor' | 'layout' | 'code' | 'instagram' | 'languages'
   title: string
   body: string
 }
@@ -81,22 +83,22 @@ export const servicesJa: Service[] = [
   {
     icon: 'monitor',
     title: 'Webサイト制作',
-    body: 'お店や医院の顔になるサイトを、設計から公開まで。',
+    body: 'お店や医院の想いを丁寧に聞いて、設計から公開まで。ひとりで最後まで見ます。',
   },
   {
     icon: 'layout',
     title: 'LP制作',
-    body: '1ページで伝えきる。広告からの導線もつくります。',
+    body: '伝えたいことを整理し、読み手が自然に行動できる導線までつくります。',
   },
   {
     icon: 'code',
     title: 'Webアプリ開発',
-    body: '予約・管理など、日々の仕事が軽くなる仕組みを。',
+    body: '予約・管理など、日々の仕事を少し楽にする仕組みを、使いやすさまで考えて形にします。',
   },
   {
     icon: 'instagram',
     title: 'Instagram運用',
-    body: '投稿の設計から制作まで。続けられる形にします。',
+    body: '投稿の企画・設計・制作から運用まで。無理なく続けられる形を一緒に探します。',
   },
 ]
 
@@ -104,21 +106,21 @@ export const servicesEn: Service[] = [
   {
     icon: 'code',
     title: 'Frontend Development',
-    body: 'React and TypeScript, with an eye on how it feels to use.',
+    body: 'React, Next.js and TypeScript. I turn designs into working interfaces and bring a developer’s perspective to improve them.',
   },
   {
     icon: 'monitor',
-    title: 'Full-stack Development',
-    body: 'APIs, databases and deployment, end to end.',
+    title: 'Backend & APIs',
+    body: 'REST APIs, authentication and databases. Understanding what happens behind the screen helps me ask better questions and build a frontend that fits.',
   },
   {
     icon: 'layout',
-    title: 'UI Implementation',
-    body: 'Turning a design into something that behaves well on every screen.',
+    title: 'Design to Code',
+    body: 'I use Figma and Canva in my web design process. As a developer, I think about how a design will work in practice, not just how it looks.',
   },
   {
-    icon: 'instagram',
-    title: 'Web Design',
-    body: 'Layout, type and motion — designed and built by the same hands.',
+    icon: 'languages',
+    title: 'Learning from People',
+    body: "I like to think things through and learn from the people around me. I'll try something new — and stick with it.",
   },
-]
+];

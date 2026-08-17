@@ -36,7 +36,6 @@ export default function SiteNav({ locale, visible = true }: { locale: Locale; vi
 
   const showCircles = !collapsed || open
   const href = (id: string) => `/${locale}/#${id}`
-  const otherLocale = en ? 'ja' : 'en'
 
   return (
  <>
@@ -80,27 +79,19 @@ export default function SiteNav({ locale, visible = true }: { locale: Locale; vi
           </button>
 
           {/* 言語切替：常にメニューの直下。畳まれると一緒に上がる */}
-          <Link
-            href={`/${otherLocale}`}
+          <div
             className="absolute left-0 flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-2 font-mono text-[11px] text-olive-text shadow-[0_5px_18px_rgba(63,59,48,.15)] transition-all duration-300"
             style={{ top: showCircles ? '372px' : '80px' }}
           >
-            <span className={en ? 'text-ink' : ''}>EN</span>
-            <span className="opacity-40">|</span>
-            <span className={en ? '' : 'text-ink'}>JP</span>
-          </Link>
+            <LangSwitch locale={locale} />
+          </div>
         </div>
       </div>
 
       {/* ── SP：言語切替を左上に浮かせる ── */}
-      <Link
-        href={`/${otherLocale}`}
-        className="fixed left-3 top-3 z-40 flex items-center gap-1.5 rounded-xl bg-white px-2.5 py-1.5 font-mono text-[9px] text-olive-text shadow-[0_4px_12px_rgba(63,59,48,.14)] md:hidden"
-      >
-        <span className={en ? 'text-ink' : ''}>EN</span>
-        <span className="opacity-40">|</span>
-        <span className={en ? '' : 'text-ink'}>JP</span>
-      </Link>
+      <div className="fixed left-3 top-3 z-40 flex items-center gap-1.5 rounded-xl bg-white px-2.5 py-1.5 font-mono text-[9px] text-olive-text shadow-[0_4px_12px_rgba(63,59,48,.14)] md:hidden">
+        <LangSwitch locale={locale} />
+      </div>
 
       {/* ── SP：下部固定バー ── */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-olive/25 bg-sand pt-2 shadow-[0_-4px_16px_rgba(63,59,48,.10)] md:hidden pb-[env(safe-area-inset-bottom)]">

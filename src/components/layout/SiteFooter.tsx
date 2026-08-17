@@ -1,16 +1,17 @@
-import Link from 'next/link'
-import { ArrowUp, Folder, Home, Layers, Mail, User } from 'lucide-react'
-import { IconBrandGithub, IconBrandInstagram, IconBrandLine, IconBrandLinkedin } from '@tabler/icons-react'
+import { ArrowUp } from 'lucide-react'
+import { IconBrandInstagram, IconBrandLine } from '@tabler/icons-react'
 import type { Locale } from '@/lib/i18n'
 
 /* フッター。
 
    ロゴは出さない（まだ無いため）。
-   「MADE IN AUSTRALIA」の一文も外した。
+   ページ内のリンクも置かない。左上のナビと同じものが並ぶだけで、
+   同じ画面に同じ行き先が2つある状態になっていた。
 
    SNS は言語で中身が変わる。
      ja  LINE公式 / Instagram   どちらもまだ開設していない
-     en  GitHub / LinkedIn
+     en  Instagram のみ          LinkedIn と GitHub は Contact の帯にある。
+                                同じリンクを1画面に2回出さない
 
    href が空のものは出さない。押せないリンクを置かないため。
    いま ja では1つも出ないので、SNS の行ごと消える。
@@ -21,27 +22,12 @@ import type { Locale } from '@/lib/i18n'
 
    スマホは下部にナビが固定されているので、その高さぶん余白を足してある。 */
 
-const NAV = [
-  { id: 'top', ja: 'トップ', en: 'Top', Icon: Home },
-  { id: 'about', ja: 'わたしについて', en: 'About', Icon: User },
-  { id: 'skills', ja: 'できること', en: 'Skills', Icon: Layers },
-  { id: 'works', ja: 'つくったもの', en: 'Works', Icon: Folder },
-  { id: 'contact', ja: 'ご相談', en: 'Contact', Icon: Mail },
-] as const
-
 export default function SiteFooter({ locale }: { locale: Locale }) {
   const en = locale === 'en'
 
   // URL が入っているものだけ出る
   const socials = en
-    ? [
-        { name: 'GitHub', href: 'https://github.com/MKuma5555', Icon: IconBrandGithub },
-        {
-          name: 'LinkedIn',
-          href: 'https://www.linkedin.com/in/misa-k-609305205/',
-          Icon: IconBrandLinkedin,
-        },
-      ]
+    ? [{ name: 'Instagram', href: '', Icon: IconBrandInstagram }]
     : [
         { name: 'LINE', href: '', Icon: IconBrandLine },
         { name: 'Instagram', href: '', Icon: IconBrandInstagram },
@@ -51,22 +37,12 @@ export default function SiteFooter({ locale }: { locale: Locale }) {
 
   return (
     <footer className="bg-footer text-cream">
-      <div className="wrapper pb-28 pt-14 md:pb-14">
-        <nav className="flex flex-wrap gap-2.5">
-          {NAV.map(({ id, ja, en: labelEn, Icon }) => (
-            <Link
-              key={id}
-              href={id === 'top' ? `/${locale}` : `/${locale}/#${id}`}
-              className="inline-flex items-center gap-2 rounded-pill bg-cream/12 px-4 py-2 text-xs transition-colors hover:bg-cream/25"
-            >
-              <Icon size={14} />
-              {en ? labelEn : ja}
-            </Link>
-          ))}
-        </nav>
-
+      {/* 高さは必要な分だけ。中身は SNS と著作権表示しかないので、
+          ページ内リンクを持っていた頃の余白のままだと空きすぎる。
+          スマホの pb-24 は、画面下に固定されているナビの高さぶんの逃げ。 */}
+      <div className="wrapper pb-24 pt-8 md:pb-8 md:pt-8">
         {live.length > 0 && (
-          <div className="mt-8 flex gap-5">
+          <div className="flex gap-5">
             {live.map(({ name, href, Icon }) => (
               <a
                 key={name}
@@ -82,7 +58,13 @@ export default function SiteFooter({ locale }: { locale: Locale }) {
           </div>
         )}
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-cream/20 pt-6 text-sm text-cream/75 sm:flex-row sm:items-center sm:justify-between">
+        {/* 区切り線と上の余白は、SNS の行があるときだけ。
+            無いときに付けると、何も無い場所を線で区切ることになる。 */}
+        <div
+          className={`flex flex-col gap-3 text-sm text-cream/75 sm:flex-row sm:items-center sm:justify-between ${
+            live.length > 0 ? 'mt-8 border-t border-cream/20 pt-6' : ''
+          }`}
+        >
           <p className="font-mono text-[11px] tracking-wider">
             © {new Date().getFullYear()} Misa Kumagai
           </p>

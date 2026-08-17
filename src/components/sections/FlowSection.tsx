@@ -130,7 +130,7 @@ export default function FlowSection({ locale }: { locale: Locale }) {
       <header>
         <SectionTitle no="04">{en ? 'How I work' : 'Flow'}</SectionTitle>
         <p className="mt-4 text-muted">
-          {en ? 'What I keep in mind when I build' : 'ご相談から公開までの流れ'}
+          {en ? 'How I work as part of a team' : 'ご相談から公開までの流れ'}
         </p>
       </header>
 

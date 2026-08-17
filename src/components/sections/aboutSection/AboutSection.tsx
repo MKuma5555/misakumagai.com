@@ -24,14 +24,14 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import type { Locale } from '@/lib/i18n'
 import { AnimatePresence, motion } from 'motion/react'
 import { aboutData } from './aboutData'
 import SectionTitle from '@/components/ui/SectionTitle'
 
-// locale は今は使っていない。aboutData を ja/en に分けるときに使う
+// 文章は aboutData が ja / en の両方を持っている。locale で選ぶだけ
 export default function AboutSection({ locale }: { locale: Locale }) {
-  void locale
 
   const [activeTab, setActiveTab] = useState(0)
   const [direction, setDirection] = useState(1)
@@ -77,7 +77,7 @@ export default function AboutSection({ locale }: { locale: Locale }) {
       {/* SPは縦積み、PC(md以上)は色面の上に写真を重ねる。
           並び順は order で入れ替える。HTMLの順序は変えない —
           読み上げソフトと検索エンジンには文章の順序で届いてほしいため。 */}
-      <div className="relative flex flex-col py-14 md:block md:py-20">
+      <div className="relative flex flex-col py-14 md:block md:min-h-[650px] md:py-20">
         {/* 色面。中身とは切り離した1枚の背景として敷く。
             SPは写真も文章もまるごと覆う。PCは左85%だけ（写真は右にはみ出す）。 */}
         <motion.div
@@ -87,12 +87,18 @@ export default function AboutSection({ locale }: { locale: Locale }) {
           transition={{
             duration: 0.6,
           }}
-          className={`absolute inset-0 rounded-tr-[48px] md:right-[15%] md:rounded-tr-[80px] ${current.bgColor}`}  
+          className={`absolute inset-0 rounded-tr-[48px] md:right-[25%] md:rounded-tr-[80px] ${current.bgColor}`}
           aria-hidden
         />
 
-        {/* テキスト */}
-        <div className="relative z-10 order-4 px-8 pt-8 pb-4 md:order-none md:min-h-[650px] md:w-[85%] md:px-12 md:py-12">
+        {/* 見出し。SPは写真の上、PCは文章の上。
+            本文と1つの箱に入れていたが、SPだと写真より下に落ちてしまう。
+            別の箱にして order で位置を決めている。
+
+            左の余白は 8%。画面の左上にナビの丸が固定で浮いていて、
+            そこは 84px まで使われている。48px だと文章がその下に潜る。
+            8% なら 1500px 幅で 120px。どの画面幅でもナビをよけられる。 */}
+        <div className="relative z-10 order-1 px-8 pb-6 md:order-none md:w-[72%] md:pb-8 md:pl-[8%] md:pr-12 md:pt-12">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={current.id}
@@ -101,28 +107,53 @@ export default function AboutSection({ locale }: { locale: Locale }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{
-                duration: 0.45,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             >
               {/* 番号はタブが変わっても 01 のまま。セクションの通し番号であって、
                   タブの番号ではない。タブ側の番号（01/02/03）とは別物。 */}
-              <SectionTitle no="01" className="mb-6 md:mb-8">
-                {current.label}
-              </SectionTitle>
+              <SectionTitle no="01">{current.label}</SectionTitle>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-              {/* 章の見出し。上に h2 が来たので h3 にしてある。
-                  見た目はこちらのほうが大きいが、順番は入れ子のとおりにする */}
-              <h3 className="mb-5 text-3xl md:mb-8 md:text-5xl">{current.title}</h3>
-
-              <p className="max-w-lg leading-8">{current.description}</p>
+        {/* 本文。SPは写真の下。
+            文字の幅は色面（75%）の内側に収める。色面より広くすると、
+            文章が色面からはみ出して読みにくくなる。 */}
+        <div className="relative z-10 order-3 px-8 pt-8 pb-4 md:order-none md:w-[72%] md:pb-12 md:pl-[8%] md:pr-12">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={current.id}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {/* 1段落目だけ大きく出す。ここが章の見出し代わり。
+                  2段落目からは本文の大きさ。 */}
+              <div className="max-w-lg space-y-5">
+                {current.body[locale].map((text, i) => (
+                  <p
+                    key={i}
+                    className={
+                      i === 0
+                        ? 'text-xl leading-9 md:text-2xl md:leading-[1.9]'
+                        : 'leading-8 text-muted'
+                    }
+                  >
+                    {text}
+                  </p>
+                ))}
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
         {/* 写真とタブ — SPは色面の中、PCは絶対配置で色面の右端にはみ出す */}
-        <div className="relative z-10 order-1 w-full px-8 md:absolute md:top-40 md:right-[5%] md:order-none md:w-[42%] md:px-0">
+        {/* 色面を狭めたぶん、写真も左へ寄せる。
+            right-12% で、色面の右端（25%）を写真が跨ぐ形になる。 */}
+        <div className="relative z-10 order-2 w-full px-8 md:absolute md:top-40 md:right-[12%] md:order-none md:w-[42%] md:px-0">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={current.id}
@@ -141,14 +172,42 @@ export default function AboutSection({ locale }: { locale: Locale }) {
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.18}
               onDragEnd={(_, info) => onSwipe(info.offset.x, info.velocity.x)}
-              className="cursor-grab touch-pan-y active:cursor-grabbing"
+              className="relative cursor-grab touch-pan-y active:cursor-grabbing"
             >
-              {/* Number */}
-              <p className="mb-3 text-4xl italic md:text-5xl">{current.number}</p>
+              {/* 番号。写真の左上の角に重ねる。
+                  写真の枠は overflow-hidden なので、中に入れると外へ出た分が切れる。
+                  外に置いて absolute で乗せている。
 
-              {/* Photo — 高さを固定せず 4:5 の比率で。画面幅に応じて伸び縮みする */}
-              <div className="flex aspect-[4/5] items-center justify-center rounded-tl-[28px] rounded-br-[28px] bg-neutral-500 text-4xl text-white select-none md:aspect-auto md:h-[400px]">
-                {current.label}
+                  白抜き + 細い縁取り。写真は明るいところも暗いところもあるので、
+                  白だけだと明るい写真の上で消える。縁取りが下限を作る。 */}
+              <p
+                className="pointer-events-none absolute -top-5 left-2 z-10 font-hero text-[clamp(3.2rem,11vw,5.5rem)] leading-none text-cream md:-top-8 md:left-4"
+                style={{
+                  WebkitTextStroke: '1.5px var(--color-ink)',
+                  textShadow: '0 3px 14px rgba(63,59,48,.25)',
+                }}
+              >
+                {current.number}
+              </p>
+
+              {/* Photo — SPは 4:5 の比率、PCは高さ 400px 固定。
+                  fill を使うので親に relative が要る。
+                  overflow-hidden が無いと、角丸から写真がはみ出す。
+
+                  alt は空。隣に本文があり、写真は雰囲気を伝えるためのもの。
+                  読み上げソフトに「写真」とだけ言われても情報が増えない。 */}
+              {/* PCは横長（幅42% × 高さ400px）。写真は縦長なので上下が切れる。
+                  切る位置は object-top。真ん中で切ると顔から上が消える。
+                  切りたくない場合は枠を縦長にするしかない（object-contain だと左右が空く）。 */}
+              <div className="relative aspect-[3/4] overflow-hidden rounded-tl-[28px] rounded-br-[28px] bg-line select-none md:aspect-auto md:h-[400px]">
+                <Image
+                  src={current.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 42vw, 84vw"
+                  style={{ objectPosition: current.focus ?? 'center top' }}
+                  className="object-cover"
+                />
               </div>
             </motion.div>
           </AnimatePresence>

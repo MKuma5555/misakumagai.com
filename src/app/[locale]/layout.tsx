@@ -39,25 +39,29 @@ export default async function LocaleLayout({
         <Loading />
         <SiteNav locale={locale} />
 
-        {/* 上に乗って動く側。中身とフッターをまとめて1枚の面にする。
+        {/* 縦の並びは
+              中身（上に乗って動く）→ Closing（下に敷いてある）→ Footer
+            画面で起きることは
+              中身が上へ抜ける → Closing が1画面ぶん現れる → Footer が下からせり上がる
 
             bg-cream は必須。ここが透けていると、
             全部のセクションの裏に下の締め画面が見えてしまう。
 
             z-10 で締め画面（z-0）より前に置く。 */}
-        <div className="relative z-10 bg-cream">
-          {children}
-          <SiteFooter locale={locale} />
-        </div>
+        <div className="relative z-10 bg-cream">{children}</div>
 
-        {/* 下に敷く側。文書の最後に置いて、画面の下に貼りつけておく。
-            上の面がスクロールで抜けると、ここが出てくる。
-
-            sticky なので、文書の終わりまで来たら自然に止まる。
+        {/* 下に敷く側。画面の下に貼りついたまま、上の面が抜けると出てくる。
+            sticky なので、自分の本来の位置まで来たら自然に外れて一緒に流れる。
             高さは h-svh。100vh だとスマホのアドレスバーぶんはみ出す。 */}
         <section className="sticky bottom-0 z-0 flex h-svh items-center justify-center bg-sand">
           <ClosingNote locale={locale} />
         </section>
+
+        {/* ページの最後。z-10 が要る —
+            Closing がまだ貼りついている間に重なるので、前に出しておく */}
+        <div className="relative z-10">
+          <SiteFooter locale={locale} />
+        </div>
 
         {/* 「ページの先頭へ」はフッターの中にある。
             右下は FloatingCta が使っているので、浮くボタンは作らない */}

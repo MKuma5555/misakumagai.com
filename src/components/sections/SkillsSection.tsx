@@ -1,5 +1,5 @@
 import SectionTitle from '@/components/ui/SectionTitle'
-import { Code2, LayoutTemplate, Monitor } from 'lucide-react'
+import { Code2, Languages, LayoutTemplate, Monitor } from 'lucide-react'
 import { IconBrandInstagram } from '@tabler/icons-react'
 import type { Locale } from '@/lib/i18n'
 import { servicesEn, servicesJa, type Service } from '@/content/skills'
@@ -21,6 +21,7 @@ const ICON = {
   layout: LayoutTemplate,
   code: Code2,
   instagram: IconBrandInstagram,
+  languages: Languages,
 } as const
 
 function ServiceItem({ service }: { service: Service }) {

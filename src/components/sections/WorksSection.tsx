@@ -42,7 +42,13 @@ export default function WorksSection({ locale }: { locale: Locale }) {
           </SectionTitle>
         </div>
 
-        <WorksSlider works={items} locale={locale} />
+        {/* total は「その言語で出せる全件数」。最後のカードの「6 / 12」に使う。
+            items は featured で絞った後なので、そこからは全件が分からない。 */}
+        <WorksSlider
+          works={items}
+          locale={locale}
+          total={works.filter((w) => w.showIn.includes(locale)).length}
+        />
 
         <div className={`mt-7 ${GUTTER_LEFT}`}>
           <Link

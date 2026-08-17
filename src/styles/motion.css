@@ -110,6 +110,20 @@
   }
 }
 
+/* FV の飾りの形。ゆっくり漂う。
+   振れ幅と回り方は1枚ずつ CSS 変数で渡す。
+   全部を同じ動きにすると、まとまって揺れて背景が波打って見える。
+   長さも1枚ずつ変えて、周期が重ならないようにしてある。 */
+@keyframes blob-float {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(var(--fx, 2%), var(--fy, -2%)) rotate(var(--fr, 2deg));
+  }
+}
+
 /* 下地。形の隙間から FV が見えないように、最初だけ敷いておく */
 @keyframes veil-fade {
   to {

@@ -2,21 +2,19 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
 import type { Locale } from '@/lib/i18n'
+import { cx } from '@/lib/utils'
 
 /* FV。1画面ぴったり。
 
-   丸い写真を絶対配置で置いて、そのすき間に文字を入れている。
-   丸の形は SVG で切り抜かず border-radius を8つの値で作る。
-   SVG の clipPath だと写真を差し替えるたびに切り抜きを作り直すことになる。
+   右に切り抜きの絵、左に文字、余白は Loading と同じ形（blobs）で埋める。
+   形はゆっくり漂わせる。
 
-   PC は3枚（左上・右の大きいの・左下）、SP は2枚。
-   縦画面に3枚入れると1枚あたりが小さくなり、何の写真か分からなくなる。
-
-   位置は中の箱（max-w-[1500px]）からの割合。画面からの割合にすると、
-   横に広い画面で左右へ引き伸ばされて、真ん中がぽっかり空く。
+   絵と文字は中の箱（max-w-[1500px]）からの割合。
+   画面からの割合にすると、横に広い画面で左右へ引き伸ばされて真ん中が空く。
+   飾りの形だけは逆で、画面の縁が基準。縁から離れると浮いて見える。
 
    高さは h-svh。100vh はスマホのアドレスバーぶん画面より大きくなり、下がはみ出す。
-   丸は箱の外へわざとはみ出させているので、overflow-hidden が要る。
+   形は箱の外へわざとはみ出させているので、overflow-hidden が要る。
    これが無いと横スクロールが出る。
 
    sticky top-0 で画面の上に貼りついたまま、次のセクションが上にかぶさる。
@@ -24,23 +22,66 @@ import type { Locale } from '@/lib/i18n'
    かぶさる側（page.tsx の z-10 の箱）に背景色が要る。
    透けているとここが見えたままになる。 */
 
-/* 写真。用意できたら public/ に置いてここにパスを書く。
-   空のままなら枠だけ出る。src="" の <img> は出さないこと —
-   ブラウザがページ自身を読みに行って警告が出る。 */
-const PHOTOS = {
-  main: '', // 右の大きい丸（SPでは上の大きい丸）
-  top: '', // PC 左上。上が見切れる
-  sub: '', // 左下
+/* 主役の絵。切り抜き済みの透過画像なので、丸で囲わずそのまま置く。
+   写真だった頃は blob 型に切り抜いていたが、絵の輪郭がすでに形になっている。
+   囲うと形が二重になって窮屈に見える。
+
+   写真に戻すときは、下の <Image> に object-cover と丸い枠を付け直すこと。
+   そのままだと、余白の中に小さく収まってしまう。 */
+const ILLUST = '/images/fv/illust.webp'
+
+/* 飾りの形。Loading と同じ4枚を使い回している。
+   画面の縁からわざとはみ出させて、続きがあるように見せる。
+
+     x, y   置く位置（％。形の左上）
+     w      PC での幅（vw）
+     wSp    スマホでの幅（vw）。0 ならスマホには出さない
+     fx, fy 漂う向きと振れ幅
+     fr     傾く角度
+     dur    1往復にかかる時間
+     delay  始まりをずらす。揃うと全部が同じ動きになる
+
+   幅を vw で持つと、同じ数字でも画面が狭いほど小さくなる。
+   11vw は PC で 170px、スマホでは 41px。点にしか見えない。
+   なので PC とスマホで別々の数字を持たせている。 */
+type Deco = {
+  kind: 'leaf' | 'peach' | 'blush' | 'mint'
+  x: number
+  y: number
+  w: number
+  wSp: number
+  fx: string
+  fy: string
+  fr: string
+  dur: number
+  delay: number
 }
 
-/* 丸の形。数字は「どのくらい膨らむか」の割合。
-   4つ / 4つ で、横方向と縦方向を別々に指定している。
-   全部 50% にすると真円になる。 */
-const SHAPE = {
-  main: '56% 44% 46% 54% / 52% 46% 54% 48%',
-  top: '44% 56% 52% 48% / 62% 58% 42% 38%',
-  sub: '62% 38% 44% 56% / 46% 56% 44% 54%',
-}
+const BLOB = {
+  leaf: { src: '/images/blobs/leaf.webp', w: 900, h: 869 },
+  peach: { src: '/images/blobs/peach.webp', w: 610, h: 900 },
+  blush: { src: '/images/blobs/blush.webp', w: 830, h: 900 },
+  mint: { src: '/images/blobs/mint.webp', w: 830, h: 900 },
+} as const
+
+/* fx / fy の % は「その形自身の大きさ」に対する割合。画面ではない。
+   小さい形ほど同じ % でも動く距離が短くなるので、小さいものほど大きめの数字にしてある。
+   目安は、動く距離が形の1割くらい。それ以下だと止まって見える。 */
+const DECO: Deco[] = [
+  /* 画面の四隅。濃い色のもの */
+  { kind: 'peach', x: 2, y: -8, w: 11, wSp: 30, fx: '14%', fy: '18%', fr: '-6deg', dur: 9, delay: 0 },
+  { kind: 'leaf', x: 82, y: -11, w: 22, wSp: 52, fx: '8%', fy: '-9%', fr: '4deg', dur: 10, delay: 0.5 },
+  { kind: 'peach', x: -8, y: 78, w: 14, wSp: 40, fx: '11%', fy: '-12%', fr: '6deg', dur: 10, delay: 1.6 },
+  { kind: 'leaf', x: 91, y: 84, w: 12, wSp: 34, fx: '-13%', fy: '-14%', fr: '-6deg', dur: 12, delay: 2.4 },
+
+  /* 絵の後ろ。もともと絵に描き込まれていた淡い形を、こちらに移したもの。
+     描き込みのままだと動かせず、絵を差し替えるたびに付いてくる。
+     切り離しておけば、色も位置も動きもここで決められる。
+     絵より後ろに来るのは、この層が中の箱（z-10）より前に書かれているため。 */
+  { kind: 'blush', x: 40, y: 10, w: 30, wSp: 0, fx: '-6%', fy: '7%', fr: '3deg', dur: 16, delay: 0.3 },
+  { kind: 'mint', x: 70, y: 52, w: 24, wSp: 0, fx: '7%', fy: '-6%', fr: '-3deg', dur: 14, delay: 1.9 },
+  { kind: 'blush', x: 4, y: 52, w: 20, wSp: 46, fx: '9%', fy: '8%', fr: '4deg', dur: 13, delay: 1.1 },
+]
 
 const TEXT = {
   ja: {
@@ -48,14 +89,12 @@ const TEXT = {
     tag: 'はじまりは、いつも人の話を聞くことから。',
     ring: 'WORKS ・ 作品を見る ・ ',
     works: '作品一覧を見る',
-    photo: '準備中',
   },
   en: {
-    role: 'Full-stack Developer — Melbourne',
+    role: 'Software Developer — Melbourne',
     tag: 'It always starts with listening.',
     ring: 'WORKS ・ VIEW ALL ・ ',
     works: 'View all works',
-    photo: 'Coming soon',
   },
 } as const
 
@@ -64,49 +103,87 @@ export default function HeroSection({ locale }: { locale: Locale }) {
 
   return (
     <section className="sticky top-0 z-0 h-svh overflow-hidden">
-      {/* 中の箱。ここを基準に全部を置くので、画面が広くても散らばらない */}
-      <div className="relative mx-auto h-full w-full max-w-[1500px]">
-        {/* 右の大きい丸。SP では画面上いっぱいに置く */}
-        <Photo
-          src={PHOTOS.main}
-          shape={SHAPE.main}
-          label={t.photo}
-          sizes="(min-width: 768px) 41vw, 82vw"
-          className="left-[18%] top-[36%] h-[32%] w-[82%] md:left-[50%] md:top-[16%] md:h-[56%] md:w-[41%]"
-        />
+      {/* 飾りの形。画面の縁を基準に置くので、中の箱ではなくここに直接。
+          中の箱（最大1500px）に入れると、広い画面で縁から離れて浮く。 */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        {DECO.map((d, i) => {
+          const b = BLOB[d.kind]
+          return (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={i}
+              src={b.src}
+              width={b.w}
+              height={b.h}
+              alt=""
+              /* 幅は CSS 変数で渡して、クラス側で画面幅ごとに切り替える。
+                 インラインの style には「画面が広いときだけ」が書けないため。 */
+              className={cx(
+                'absolute h-auto max-w-none w-[var(--w-sp)] md:w-[var(--w-pc)]',
+                d.wSp === 0 && 'hidden md:block',
+              )}
+              style={
+                {
+                  left: `${d.x}%`,
+                  top: `${d.y}%`,
+                  '--w-sp': `${d.wSp}vw`,
+                  '--w-pc': `${d.w}vw`,
+                  '--fx': d.fx,
+                  '--fy': d.fy,
+                  '--fr': d.fr,
+                  animation: `blob-float ${d.dur}s ease-in-out ${d.delay}s infinite`,
+                } as React.CSSProperties
+              }
+            />
+          )
+        })}
+      </div>
 
-        {/* 左上。上が見切れる。SP では出さない */}
-        <Photo
-          src={PHOTOS.top}
-          shape={SHAPE.top}
-          label={t.photo}
-          sizes="40vw"
-          className="hidden md:block md:left-[7%] md:top-[-14%] md:h-[42%] md:w-[40%]"
-        />
+      {/* 中の箱。ここを基準に置くので、画面が広くても散らばらない */}
+      <div className="relative z-10 mx-auto h-full w-full max-w-[1500px]">
+        {/* 主役の絵。高さを決めれば幅は元画像の比で決まる（aspect-[1022/1166]）。
+            幅で決めると、背の低い画面（ノートPCを横向きで開いたとき）で
+            下がはみ出して足元が切れる。高さ基準なら必ず収まる。
 
-        {/* 左下 */}
-        <Photo
-          src={PHOTOS.sub}
-          shape={SHAPE.sub}
-          label={t.photo}
-          sizes="(min-width: 768px) 25vw, 36vw"
-          className="left-[2%] top-[68%] h-[20%] w-[36%] md:left-[14%] md:top-[63%] md:h-[29%] md:w-[25%]"
-        />
+            比の数字は画像の実寸。透明な余白を切り落としてあるので、
+            この箱＝絵の見えている範囲になる。差し替えたら比も直すこと。
+
+            object-contain。切り抜き済みの絵なので、cover にすると縁が切れる。 */}
+        <div className="absolute left-1/2 top-[31%] aspect-[1022/1166] h-[48%] w-auto -translate-x-1/2 md:left-auto md:right-[10%] md:top-[9%] md:h-[82%] md:translate-x-0">
+          <Image
+            src={ILLUST}
+            alt=""
+            fill
+            sizes="(min-width: 768px) 46vw, 80vw"
+            priority
+            className="object-contain"
+          />
+        </div>
 
         {/* 文字。SP は左上、PC は左の真ん中。
             ナビのロゴが左上に固定で乗っているので、SP はその下から始める。 */}
-        <div className="absolute left-[8%] top-[11%] w-[84%] md:left-[11%] md:top-[31%] md:w-[33%]">
+        {/* 幅は 33% → 36%。文字を大きくしたぶん、置き場所も広げないと折り返す。
+            36% が上限。絵は右から10%・幅43%なので、47% から先は絵に重なる。 */}
+        <div className="absolute left-[8%] top-[11%] w-[84%] md:left-[11%] md:top-[31%] md:w-[36%]">
           {/* ここだけ Chewy。欧文しか持たない書体なので他では使わない。
-              日本語版でもこの1行は英語なので、そのまま出る。 */}
-          <h1 className="font-hero text-[clamp(2.7rem,4.6vw,4rem)] leading-[1.1]">
+              日本語版でもこの1行は英語なので、そのまま出る。
+
+              大きさは画面幅に対する割合。3行とも1行に収めたいので、
+              文字数 × 幅 が箱に収まる範囲で頭打ちにしてある。
+              上限を上げると、狭い画面から順に折り返し始める。 */}
+          <h1 className="font-hero text-[10vw] leading-[1.1] md:text-[clamp(2.6rem,4.2vw,4rem)]">
             Hello, I&apos;m Misa.
           </h1>
 
-          <p className="mt-3 font-mono text-[11px] tracking-[.08em] text-olive-text md:mt-4 md:text-[13px]">
+          <p className="mt-3 font-mono text-[13px] tracking-[.08em] text-olive-text md:mt-4 md:text-[18px]">
             {t.role}
           </p>
 
-          <p className="mt-3 font-display text-sm leading-[1.85] md:mt-4 md:text-[15px]">{t.tag}</p>
+          {/* 一言は日本語のほうが長い（1文字が欧文の倍の幅）。
+              日本語で収まる大きさにしてある。英語だけ大きくはしない。 */}
+          <p className="mt-3 font-display text-[15px] leading-[1.85] md:mt-4 md:text-[20px]">
+            {t.tag}
+          </p>
         </div>
 
         {/* Works への入口。文字と対角になる位置 */}
@@ -118,37 +195,6 @@ export default function HeroSection({ locale }: { locale: Locale }) {
         />
       </div>
     </section>
-  )
-}
-
-/* 丸1つ。写真が無いときは枠だけ出す。 */
-function Photo({
-  src,
-  shape,
-  label,
-  sizes,
-  className,
-}: {
-  src: string
-  shape: string
-  label: string
-  sizes: string
-  className: string
-}) {
-  return (
-    <div
-      aria-hidden={!src}
-      style={{ borderRadius: shape }}
-      className={`absolute overflow-hidden bg-[#cfc9b6] ${className}`}
-    >
-      {src ? (
-        <Image src={src} alt="" fill sizes={sizes} className="object-cover" />
-      ) : (
-        <span className="absolute inset-0 flex items-center justify-center font-mono text-[10px] tracking-[.2em] text-cream/70">
-          {label}
-        </span>
-      )}
-    </div>
   )
 }
 

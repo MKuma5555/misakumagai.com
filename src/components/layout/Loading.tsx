@@ -13,14 +13,19 @@ import { useEffect, useState } from 'react'
    動かすのは transform と opacity だけ。位置や幅を動かすと
    毎フレーム再レイアウトが走って、低いスペックの端末で引っかかる。
 
-   出す / 出さないの判定は持っていない。持たなくて済む作りになっている。
+   出すのは「ページを読み込んだ最初の1回」だけ。
 
-     再読み込み  ページごと読み直すので、ここも作り直されて動く
-     下層から戻る 作り直されない。Loading は layout の中にあり、
-                 ページ移動では layout が残るため、そもそも動かない
+     再読み込み    出る。読み直すのでこのファイルごと評価し直される
+     下層から戻る   出ない。layout は作り直されないので、そもそも動かない
+     日本語⇄英語   出ない。URLの [locale] が変わると layout が作り直されるが、
+                  下の shown が「このページで既に出した」を覚えている
 
-   sessionStorage で「一度見たか」を覚える手もあるが、
-   それを入れると再読み込みでも出なくなる。 */
+   sessionStorage は使わない。それだと再読み込みでも出なくなる。
+   モジュールの変数なら、ページを読み直した時だけ false に戻る。 */
+
+/* このファイルが読み込まれてから一度でも出したか。
+   ページを読み直すと false に戻る。それが欲しい挙動。 */
+let shown = false
 
 const SRC = {
   leaf: { src: '/images/blobs/leaf.webp', w: 900, h: 869 },
@@ -72,12 +77,29 @@ const OUT = 1800
 const TOTAL = BLOBS[BLOBS.length - 1].delay + OUT + 300
 
 export default function Loading() {
-  const [done, setDone] = useState(false)
+  /* サーバーでは必ず false。サーバー側の変数は他の人の表示にも残るので、
+     ここで shown を読むと「他の人が見たから出さない」になってしまう。
+     ブラウザでだけ shown を見る。
+
+     言語を切り替えたときはブラウザ側の作り直しなので、
+     この初期値が最初から true になり、一瞬も出ない。 */
+  const [done, setDone] = useState(() => typeof window !== 'undefined' && shown)
 
   // 動きが終わったら取り除く。透明とはいえ、画面いっぱいの要素を
   // 残したままにすると、後ろの描画の負担になる
   useEffect(() => {
-    const timer = setTimeout(() => setDone(true), TOTAL)
+    if (shown) {
+      setDone(true)
+      return
+    }
+
+    /* 印は「始めるとき」ではなく「終わったとき」に立てる。
+       React は開発モードで初期化処理をわざと2回走らせるので、
+       始めるときに立てると、2回目が「もう出した」と判断して即座に消える。 */
+    const timer = setTimeout(() => {
+      shown = true
+      setDone(true)
+    }, TOTAL)
     return () => clearTimeout(timer)
   }, [])
 

@@ -20,7 +20,7 @@ import type { Locale } from '@/lib/i18n'
 /* 読点で改行する。日本語は自動の折り返しがどこで切れるか読めないので、
    大きい文字ほど自分で決めたほうがきれいに収まる。 */
 const LINES: Record<Locale, [string, string]> = {
-  ja: ['つくって終わりではなく、', '続いていくものを。'],
+  ja: ['つくって終わりではなく', '続いていくものを'],
   en: ['Built to keep going,', 'not just to launch.'],
 }
 

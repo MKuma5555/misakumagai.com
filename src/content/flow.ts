@@ -1,14 +1,17 @@
 /* 4ステップのカード。ja と en で中身がまったく違う。
 
    ja  ご相談から公開までの流れ。クライアント向けの手順
-   en  コーディングで意識していること
+   en  チームの中でどう働くか
 
    ja をそのまま英訳すると「案件を受ける人」に読まれる。
    転職用のページで一番避けたい誤解なので、内容ごと差し替える。
    部品（番号・アイコン・見出し・本文）は共通で使い回す。
 
-   ※ 文章は叩き台。Misa の言葉に置き換える予定。
-   note は補足。無くてもよい。 */
+   en を「コードの書き方」ではなく「チームでの働き方」にしてあるのは、
+   採用担当が一番知りたいのがそこだから。転職組にとっての不安材料は
+   技術より「教える手間がかかるか」で、その問いに直接答える。
+
+   note は補足。無くてもよい（en では使っていない）。 */
 
 export type FlowIcon = 'mail' | 'search' | 'pen' | 'rocket' | 'note' | 'ask'
 
@@ -33,7 +36,7 @@ export const flowJa: FlowStep[] = [
     icon: 'search',
     title: 'お見積り・ご提案',
     body: 'お話をもとに、内容と費用、期間をお出しします。ここまで費用はかかりません。',
-    note: '3営業日ほど',
+    note: '3〜7営業日ほど',
   },
   {
     step: '03',
@@ -54,26 +57,26 @@ export const flowJa: FlowStep[] = [
 export const flowEn: FlowStep[] = [
   {
     step: '01',
-    icon: 'pen',
-    title: 'Design before code',
-    body: 'I sketch the screen and the data first. Redoing a layout is cheap. Redoing a data model is not.',
+    icon: 'note',
+    title: 'Understand first',
+    body: 'When I join a project, I start by reading the documentation and listening to the team to understand how things work.',
   },
   {
     step: '02',
-    icon: 'rocket',
-    title: 'Ship small',
-    body: 'Small changes, often. Easier to review, easier to undo when something turns out wrong.',
+    icon: 'mail',
+    title: 'Own my work',
+    body: 'I take responsibility for my tasks and work towards the agreed timeline. If I need help along the way, I communicate and keep things moving.',
   },
   {
     step: '03',
-    icon: 'note',
-    title: 'Write down the why',
-    body: 'Comments explain the reason, not the code. In six months I am a stranger to my own work.',
+    icon: 'ask',
+    title: 'Ask and learn',
+    body: "When I'm stuck, I research, use AI tools, or ask more experienced teammates. I try to learn from each question and apply it next time.",
   },
   {
     step: '04',
-    icon: 'ask',
-    title: 'Ask early',
-    body: 'Stuck for an hour? I ask. Guessing quietly is the expensive option for everyone.',
+    icon: 'search',
+    title: 'Look beyond the task',
+    body: 'If I find a bug or something that could be better, I raise it and help work out what to do. I’ve also written test cases and scenario tests to catch issues early.',
   },
 ]
