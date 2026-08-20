@@ -1,16 +1,15 @@
 import type { Metadata } from 'next'
 import type { Locale } from '@/lib/i18n'
-
-const BASE = 'https://misakumagai.com'
+import { SITE_URL as BASE } from '@/lib/site'
 
 /* ja と en は同じ内容の別言語版だと Google に伝えるための印。
    これが無いと「似たページが2つある」と見なされて、
    どちらか片方しか検索結果に出なくなることがある。
 
    /ja/works なら
-     canonical  https://misakumagai.com/ja/works
-     ja         https://misakumagai.com/ja/works
-     en         https://misakumagai.com/en/works
+     canonical  https://www.misakumagai.com/ja/works
+     ja         https://www.misakumagai.com/ja/works
+     en         https://www.misakumagai.com/en/works
 
    path は言語を含まない部分だけ渡す（'' / '/works' / '/works/xxx'）。 */
 

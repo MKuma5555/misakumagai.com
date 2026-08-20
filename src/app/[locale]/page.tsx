@@ -37,10 +37,13 @@ export async function generateMetadata({
   const { locale } = await params
   const l = (isLocale(locale) ? locale : 'ja') as Locale
   return {
+    /* 検索結果とSNSに出る一行。サイトを開いた人には見えない。
+       ここは雰囲気ではなく「何をしてくれる人か」を書く場所。
+       サイトの中の言葉（FV・Closing）とは役割が違うので、揃えなくてよい。 */
     description:
       l === 'en'
-        ? 'Frontend developer based in Melbourne. Turning ideas into meaningful experiences.'
-        : '想いを、伝わる形に。一緒に考えて、一緒につくる。',
+        ? 'Frontend developer based in Melbourne, building websites, landing pages and web applications.'
+        : 'Webサイト・LP・Webアプリを作っています。',
     alternates: localeAlternates(l),
   }
 }

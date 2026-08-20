@@ -18,6 +18,10 @@ export async function generateMetadata({
   const l = (isLocale(locale) ? locale : 'ja') as Locale
   return {
     title: l === 'en' ? 'Contact' : 'お問い合わせ',
+    description:
+      l === 'en'
+        ? "Get in touch about roles, projects, or anything you'd like to talk through."
+        : 'ご相談・お見積もりはこちらから。',
     alternates: localeAlternates(l, '/contact'),
   }
 }

@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { locales } from '@/lib/i18n'
-
-const BASE = 'https://misakumagai.com'
+import { SITE_URL as BASE } from '@/lib/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths = ['', '/works', '/contact']

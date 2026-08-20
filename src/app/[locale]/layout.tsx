@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { fontVariables } from '@/lib/fonts'
 import { locales, isLocale } from '@/lib/i18n'
+import { SITE_URL } from '@/lib/site'
 import SiteNav from '@/components/layout/SiteNav'
 import SiteFooter from '@/components/layout/SiteFooter'
 import Loading from '@/components/layout/Loading'
@@ -15,7 +16,12 @@ import '../globals.css'
    Google が英語ページだと認識しない。 */
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://misakumagai.com'),
+  /* 本体は www 付き。旧サイトが www で公開されていたので、向きを変えない。
+     misakumagai.com へ来た人は Vercel 側で www へ送っている。
+
+     ここが実際のURLと違うと、OGP画像や正規URLが別のアドレスを指す。
+     ドメインを変えるときは、Vercel の Domains と必ず両方直すこと。 */
+  metadataBase: new URL(SITE_URL),
   title: { default: 'Misa Kumagai', template: '%s | Misa Kumagai' },
 }
 

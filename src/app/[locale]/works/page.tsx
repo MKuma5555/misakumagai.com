@@ -23,6 +23,10 @@ export async function generateMetadata({
   const l = (isLocale(locale) ? locale : 'ja') as Locale
   return {
     title: l === 'en' ? 'Works' : '制作実績',
+    description:
+      l === 'en'
+        ? "A collection of the websites, landing pages and web apps I've built."
+        : 'これまでに作ったWebサイト・LP・Webアプリの一覧です。',
     alternates: localeAlternates(l, '/works'),
   }
 }
