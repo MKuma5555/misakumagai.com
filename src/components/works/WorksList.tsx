@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
 import type { Locale } from '@/lib/i18n'
-import { works } from '@/content/works'
+import type { Work } from '@/content/works'
 import { tagsOf } from '@/content/tags'
 import { cx } from '@/lib/utils'
 import WorkListCard from './WorkListCard'
@@ -22,9 +23,13 @@ import WorkListCard from './WorkListCard'
    リンクとして開いたり共有したりできない。
 
    該当が0件の種類はボタン自体を出さない。
-   押しても何も出ないボタンを作らないため。実データを入れると自動で調整される。 */
+   押しても何も出ないボタンを作らないため。
 
-export default function WorksList({ locale }: { locale: Locale }) {
+   作品は自分で読まない。ページ（サーバー側）が Sanity から取って渡す。
+   ここはブラウザ側で動くので、ここから取りに行くと
+   Sanity のキーがブラウザに出るうえ、表示が一拍遅れる。 */
+
+export default function WorksList({ works, locale }: { works: Work[]; locale: Locale }) {
   const pathname = usePathname()
   const params = useSearchParams()
   const active = params.get('tag') ?? ''
@@ -42,7 +47,21 @@ export default function WorksList({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <header>
+      {/* 戻り先はトップの一番上ではなく Works のセクション（#works）。
+          ここへ来た人はトップのWorksから来ているので、その場所に返す。
+          一番上に戻すと、また下までスクロールし直すことになる。
+
+          詳細ページの「一覧に戻る」と同じ形・同じ位置に置いてある。
+          戻る導線が階層ごとに違う場所にあると、探すことになる。 */}
+      <Link
+        href={`/${locale}/#works`}
+        className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
+      >
+        <ArrowLeft size={16} />
+        {en ? 'Back to top page' : 'トップに戻る'}
+      </Link>
+
+      <header className="mt-6">
         <h1 className="text-3xl md:text-5xl">Works</h1>
         <p className="mt-2 text-muted">{en ? 'Selected work' : '制作実績'}</p>
       </header>

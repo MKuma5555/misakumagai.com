@@ -5,7 +5,7 @@ import { GUTTER_LEFT } from '@/lib/utils'
 import SectionSeparator from '@/components/ui/SectionSeparator'
 import SectionTitle from '@/components/ui/SectionTitle'
 import WorksSlider from '@/components/works/WorksSlider'
-import { works } from '@/content/works'
+import { getWorks } from '@/sanity/queries'
 
 /* 上下に波の区切りを置いている。波はセクションの外側にはみ出すので、
    親の <section> から relative を外さないこと。外すと画面の隅に飛ぶ。
@@ -16,14 +16,18 @@ import { works } from '@/content/works'
 
    見出し・カード・矢印・ボタンの左位置は lib/utils.ts の GUTTER_LEFT で揃える。 */
 
-export default function WorksSection({ locale }: { locale: Locale }) {
+export default async function WorksSection({ locale }: { locale: Locale }) {
   const en = locale === 'en'
 
-  /* トップに出すのは featured が付いているものだけ。
-     件数はコードではなく works.ts 側で決める。
-     6件見せたければ6件に featured: true を付ける。
+  /* Sanity から、その言語で出す作品を全部取る。
+     showIn の絞り込みは queries.ts 側でやっている。 */
+  const works = await getWorks(locale)
+
+  /* トップに出すのは「トップページに出す」が付いているものだけ。
+     件数はコードではなく Sanity 側で決める。
+     6件見せたければ6件にチェックを入れる。
      ここで slice すると、付けたのに出ない作品が黙って生まれる。 */
-  const items = works.filter((w) => w.featured && w.showIn.includes(locale))
+  const items = works.filter((w) => w.featured)
 
   return (
     /* my-10 / md:my-20 は波の分の場所取り。
@@ -42,13 +46,9 @@ export default function WorksSection({ locale }: { locale: Locale }) {
           </SectionTitle>
         </div>
 
-        {/* total は「その言語で出せる全件数」。最後のカードの「6 / 12」に使う。
+        {/* total は「その言語で出せる全件数」。最後のカードの「4 / 8」に使う。
             items は featured で絞った後なので、そこからは全件が分からない。 */}
-        <WorksSlider
-          works={items}
-          locale={locale}
-          total={works.filter((w) => w.showIn.includes(locale)).length}
-        />
+        <WorksSlider works={items} locale={locale} total={works.length} />
 
         <div className={`mt-7 ${GUTTER_LEFT}`}>
           <Link

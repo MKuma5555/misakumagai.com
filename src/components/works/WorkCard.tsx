@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Locale } from '@/lib/i18n'
-import { STATUS_LABEL, type Work } from '@/content/works'
+import { NO_IMAGE_LABEL, STATUS_LABEL, type Work } from '@/content/works'
+import { isGroup, tagLabel } from '@/content/tags'
 import Badge from '@/components/ui/Badge'
+import ConfidentialCover from './ConfidentialCover'
 
 /* 1枚のカード。スライダーにも一覧にも同じものを並べる。
 
@@ -20,6 +22,7 @@ export default function WorkCard({ work, locale }: { work: Work; locale: Locale 
   const en = locale === 'en'
   const title = en ? work.titleEn : work.titleJa
   const status = STATUS_LABEL[work.status][en ? 'en' : 'ja']
+  const techTags = work.tags.filter((t) => isGroup(t, 'tech'))
 
   return (
     <Link
@@ -40,9 +43,12 @@ export default function WorkCard({ work, locale }: { work: Work; locale: Locale 
             sizes="(min-width: 1024px) 35vw, (min-width: 640px) 46vw, 74vw"
             className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
+        ) : work.status === 'nda' ? (
+          /* 非公開案件。灰色の空箱ではなく、文字だけの面を出す */
+          <ConfidentialCover work={work} locale={locale} />
         ) : (
           <span className="absolute inset-0 flex items-center justify-center font-mono text-xs tracking-widest text-cream">
-            {en ? 'In progress…' : '準備中…'}
+            {NO_IMAGE_LABEL[work.status][en ? 'en' : 'ja']}
           </span>
         )}
 
@@ -55,17 +61,26 @@ export default function WorkCard({ work, locale }: { work: Work; locale: Locale 
         </span>
       </div>
 
-      {/* 文字の帯。高さを取りすぎないよう最小限に */}
+      {/* 文字の帯。高さは全カードで同じにする。
+
+          ここが伸び縮みすると、上の写真の取り分がカードごとに変わり、
+          並べたときに写真の大きさが揃わない。
+          だから題名は1行、タグも1行に固定してある。
+
+          タグは技術だけ。種類（app / web）は絞り込みのボタンで使うもので、
+          ここに出すと枠を食うわりに情報にならない。 */}
       <div className="shrink-0 px-4 py-3.5">
         <h3 className="line-clamp-1 text-base leading-snug">{title}</h3>
 
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {work.tags.map((tag) => (
+        {/* h-[22px] + overflow-hidden で1行だけ見せる。
+            2行目に回ったタグは切り落とす。詳細ページで全部見られる。 */}
+        <div className="mt-2 flex h-[22px] flex-wrap gap-1.5 overflow-hidden">
+          {techTags.map((tag) => (
             <span
               key={tag}
-              className="rounded-pill border border-line px-2 py-0.5 font-mono text-[10px] text-muted"
+              className="rounded-pill bg-yellow/45 px-2 py-0.5 font-mono text-[10px] whitespace-nowrap text-muted"
             >
-              {tag}
+              {tagLabel(tag, locale)}
             </span>
           ))}
         </div>

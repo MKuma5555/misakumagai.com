@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Locale } from '@/lib/i18n'
-import { STATUS_LABEL, type Work } from '@/content/works'
+import { NO_IMAGE_LABEL, STATUS_LABEL, type Work } from '@/content/works'
 import { isGroup, tagLabel } from '@/content/tags'
 import Badge from '@/components/ui/Badge'
+import ConfidentialCover from './ConfidentialCover'
 
 /* 一覧ページのカード。トップのスライダー用（WorkCard）とは別にしてある。
 
@@ -35,9 +36,12 @@ export default function WorkListCard({ work, locale }: { work: Work; locale: Loc
             sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
             className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
+        ) : work.status === 'nda' ? (
+          /* 非公開案件。灰色の空箱ではなく、文字だけの面を出す */
+          <ConfidentialCover work={work} locale={locale} />
         ) : (
           <span className="absolute inset-0 flex items-center justify-center font-mono text-xs tracking-widest text-cream">
-            {en ? 'In progress…' : '準備中…'}
+            {NO_IMAGE_LABEL[work.status][en ? 'en' : 'ja']}
           </span>
         )}
 
@@ -47,13 +51,16 @@ export default function WorkListCard({ work, locale }: { work: Work; locale: Loc
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
-        {/* タイトルと技術タグ。タグは折り返して title の右に並ぶ */}
-        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-          <h3 className="text-base leading-snug">{title}</h3>
+        {/* タイトルは1行で使い切る。タグはその下の行から。
+            同じ行に並べていたが、タイトルの長さでタグの開始位置が
+            カードごとに変わってしまい、並べたときに揃わなかった。 */}
+        <h3 className="text-base leading-snug">{title}</h3>
+
+        <div className="flex flex-wrap gap-1.5">
           {techTags.map((slug) => (
             <span
               key={slug}
-              className="rounded-pill border border-line px-2 py-0.5 font-mono text-[10px] text-muted"
+              className="rounded-pill bg-yellow/45 px-2 py-0.5 font-mono text-[10px] text-muted"
             >
               {tagLabel(slug, locale)}
             </span>

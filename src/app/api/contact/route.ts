@@ -9,7 +9,12 @@ import { getServerSupabase } from '@/lib/supabase/server'
      ② 入力の検証を素通りできない（ブラウザ側の必須チェックは消せる）
      ③ 連投を止められる
 
-   保存先のテーブルは contact_messages（旧サイトと同じ）。 */
+   保存先は Supabase の contact_messages テーブル。列は name / email / message。
+   RLS を有効にしたうえで、ポリシーは1つも作らないこと。
+   そうすると service_role キーを持つここ以外、誰も読み書きできない。
+
+   届いても通知は来ない。Supabase の管理画面を自分で見に行くこと。
+   問い合わせを待つページなので、公開後はときどき開いて確認する。 */
 
 const LIMITS = { name: 100, email: 200, message: 4000 }
 

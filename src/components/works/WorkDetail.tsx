@@ -2,9 +2,8 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 // lucide には各社のロゴが無い（商標のため削除された）。ブランド系は tabler を使う
 import { IconBrandGithub } from '@tabler/icons-react'
-import { notFound } from 'next/navigation'
 import type { Locale } from '@/lib/i18n'
-import { STATUS_LABEL, works } from '@/content/works'
+import { STATUS_LABEL, type Work } from '@/content/works'
 import { isGroup, tagLabel } from '@/content/tags'
 import Badge from '@/components/ui/Badge'
 import DeviceFrame from './DeviceFrame'
@@ -15,12 +14,12 @@ import DeviceFrame from './DeviceFrame'
    何のサイトか分かってから文章に入る。逆にすると読まれない。
 
    外部リンクは rel="noopener noreferrer" を必ず付ける。
-   付けないと、開いた先のページから元のタブを操作できてしまう。 */
+   付けないと、開いた先のページから元のタブを操作できてしまう。
 
-export default function WorkDetail({ locale, slug }: { locale: Locale; slug: string }) {
-  const work = works.find((w) => w.slug === slug && w.showIn.includes(locale))
-  if (!work) notFound()
+   作品は自分で探さない。ページ側が Sanity から1件取って渡す。
+   「その言語で出すか」「無ければ404」の判断もページ側でやる。 */
 
+export default function WorkDetail({ work, locale }: { work: Work; locale: Locale }) {
   const en = locale === 'en'
   const title = en ? work.titleEn : work.titleJa
   const summary = en ? work.summaryEn : work.summaryJa

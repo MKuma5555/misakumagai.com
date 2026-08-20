@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { isLocale, type Locale } from '@/lib/i18n'
 import { localeAlternates } from '@/lib/metadata'
 import WorksList from '@/components/works/WorksList'
+import { getWorks } from '@/sanity/queries'
 
 /* 作品一覧。絞り込みはここだけ。
    トップのスライダーには付けない（自動再生と絞り込みは相性が悪い）。
@@ -34,10 +35,13 @@ export default async function WorksPage({
   const { locale } = await params
   if (!isLocale(locale)) notFound()
 
+  // Sanity から取るのはここ（サーバー側）。WorksList はブラウザ側なので渡すだけ
+  const works = await getWorks(locale)
+
   return (
     <main className="section-y wrapper">
       <Suspense fallback={null}>
-        <WorksList locale={locale} />
+        <WorksList works={works} locale={locale} />
       </Suspense>
     </main>
   )

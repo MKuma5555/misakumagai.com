@@ -9,7 +9,7 @@ import { Home, User, Layers, Folder, Mail, Menu } from 'lucide-react'
    EN/JP はメニューバーの下に固定する。 */
 
    const items = [
-      { id: 'top', en: 'Top', ja: 'トップ', Icon: Home },
+  { id: 'top', en: 'Top', ja: 'トップ', Icon: Home },
   { id: 'about', en: 'About', ja: 'わたしについて', Icon: User },
   { id: 'skills', en: 'Skills', ja: 'できること', Icon: Layers },
   { id: 'works', en: 'Works', ja: 'つくったもの', Icon: Folder },
