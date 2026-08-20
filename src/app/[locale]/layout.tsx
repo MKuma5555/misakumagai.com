@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { fontVariables } from '@/lib/fonts'
 import { locales, isLocale } from '@/lib/i18n'
 import { SITE_URL } from '@/lib/site'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import SiteNav from '@/components/layout/SiteNav'
 import SiteFooter from '@/components/layout/SiteFooter'
 import Loading from '@/components/layout/Loading'
@@ -39,6 +40,8 @@ export default async function LocaleLayout({
   const { locale } = await params
   if (!isLocale(locale)) notFound()
 
+  const gaId = process.env.NEXT_PUBLIC_GA_ID
+
   return (
     <html lang={locale} className={fontVariables}>
       <body>
@@ -72,6 +75,16 @@ export default async function LocaleLayout({
         {/* 「ページの先頭へ」はフッターの中にある。
             右下は FloatingCta が使っているので、浮くボタンは作らない */}
         <FloatingCta locale={locale} />
+
+        {/* 訪問者を数える。ID が入っているときだけ読み込む。
+
+            開発中は .env.local に入れない。自分が見るたびに1件数えられると、
+            「誰が来たか」ではなく「自分が何回開いたか」の記録になってしまう。
+            本番（Vercel）の環境変数にだけ置くこと。
+
+            測定IDは隠す種類の値ではない。ブラウザから送るものなので
+            NEXT_PUBLIC_ が付いていて正しい。 */}
+        {gaId && <GoogleAnalytics gaId={gaId} />}
       </body>
     </html>
   )
