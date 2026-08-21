@@ -119,10 +119,19 @@ export async function getWork(slug: string): Promise<Work | null> {
   return raw ? toWork(raw) : null
 }
 
-/* ビルド時にページを作るための一覧。
-   showIn も一緒に返す。/en に出さない作品のページまで作らないため。 */
-export async function getAllSlugs(): Promise<{ slug: string; showIn: Locale[] }[]> {
+/* ビルド時にページを作るための一覧。sitemap.ts も同じものを使う。
+
+   showIn を返すのは、/en に出さない作品のページまで作らないため。
+   updatedAt はサイトマップの lastmod に使う。
+   「いつ変わったか」を正しく伝えると、Google が見に来る頻度の判断材料になる。
+   毎回 new Date() を入れると「常にいま更新された」と言い続けることになり、
+   かえって信用されない。 */
+export type WorkRef = { slug: string; showIn: Locale[]; updatedAt: string }
+
+export async function getAllSlugs(): Promise<WorkRef[]> {
   return getSanityClient().fetch(
-    `*[_type == "project" && ${PUBLISHED} && defined(slug.current)]{ "slug": slug.current, showIn }`,
+    `*[_type == "project" && ${PUBLISHED} && defined(slug.current)]{
+       "slug": slug.current, showIn, "updatedAt": _updatedAt
+     }`,
   )
 }
