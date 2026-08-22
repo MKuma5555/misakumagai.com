@@ -31,8 +31,12 @@ export const aboutData: AboutTab[] = [
     number: '01',
     label: 'About me',
     bgColor: 'bg-leaf',
-    image: '/images/journey/myphoto2.webp',
-    focus: 'center top',
+    image: '/images/journey/myphoto5.webp',
+
+    /* 写真は横長（1403×1121）。枠のほうが横に長いので、PCでは上下が切れる。
+       SPは縦長の枠なので、こんどは左右が切れる。
+       顔が中央よりやや右・上寄りにいるため、両方で残るよう 62% 28% に寄せてある。 */
+    focus: '62% 28%',
     body: {
       ja: [
         '日本生まれ。20代でオーストラリアへ渡り、現在はメルボルンを拠点にしています。',

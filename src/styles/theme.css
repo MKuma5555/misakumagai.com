@@ -66,6 +66,10 @@
   --font-sans: var(--font-zen), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
+  /* 締めの一言だけに使うペン字。1書体で和文も欧文も持っているので、
+     hero のように受け皿を並べる必要がない。 */
+  --font-note: var(--font-klee), serif;
+
   /* --- 角丸 ----------------------------------------------- */
 
   --radius-card: 0.625rem; /* 10px。20px は写真が入ると丸すぎた */

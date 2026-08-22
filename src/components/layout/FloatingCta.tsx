@@ -21,6 +21,12 @@ import type { Locale } from '@/lib/i18n'
    bottom を計算している。env(safe-area-inset-bottom) は
    iPhone のホームバーぶんの逃げ。
 
+   PCの bottom は 16px（md:bottom-4）。
+   32px にしていたとき、ページの一番下まで来るとボタンの上端が
+   フッターの境目にちょうど重なって、線を跨いだように見えた。
+   下げてフッターの面の中に収めると、上に地の色が残って落ち着く。
+   フッターの高さを変えたら、ここも一緒に見ること。
+
    ※ LINE公式アカウントを開設したら、ja の href を lin.ee/... に差し替える */
 
 export default function FloatingCta({ locale }: { locale: Locale }) {
@@ -43,7 +49,7 @@ export default function FloatingCta({ locale }: { locale: Locale }) {
   return (
     <Link
       href={href}
-      className={`fixed right-5 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 inline-flex items-center gap-2.5 rounded-pill bg-olive px-5 py-3.5 text-[13px] text-cream shadow-[0_8px_22px_rgba(63,59,48,.26)] transition-all duration-300 hover:-translate-y-1 md:bottom-8 ${
+      className={`fixed right-5 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 inline-flex items-center gap-2.5 rounded-pill bg-olive px-5 py-3.5 text-[13px] text-cream shadow-[0_8px_22px_rgba(63,59,48,.26)] transition-all duration-300 hover:-translate-y-1 md:bottom-4 ${
         show ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'
       }`}
     >

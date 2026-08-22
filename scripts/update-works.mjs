@@ -198,6 +198,33 @@ const DRAFTS = {
     },
   },
 
+  /* ── 文章の見直し ──────────────────────────────
+     最初に書いたものが、事実は合っていても読み物になっていなかった。
+     体言止めで切る、やったことだけ並べる、という書き方をしていて、
+     報告書のようで人が話しているように読めない。
+
+     直す軸は1つ。「やったこと」の後ろに「なぜそうしたか」を足す。
+     実務案件は、判断の理由が読まれる場所なので。 */
+  portnavi: {
+    docId: 'project-portnavi',
+    fields: {
+      overviewJa:
+        'Web制作やコーディングを学ぶ人が、他の人の作品を見て参考にできるギャラリーサイトです。一覧やカテゴリーから探して、気になったものを詳細ページで見られます。3人チームで、Figmaのデザインを受け取ってWordPressのオリジナルテーマに仕上げるまでを担当しました。私は実装に加えて、3人のコードが集まる開発環境とテスト環境の用意も受け持っています。',
+      overviewEn:
+        "A gallery site where people learning web development can browse other people's work for reference. You can search or filter by category, then open a project to see how it was made. Built by a team of three: we took the Figma design and turned it into a custom WordPress theme. Alongside the build, I set up the local and test environments where the three of us brought our code together.",
+      pointsJa: [
+        '検索・閲覧数・いいねの機能は、無料で使えるプラグインを比べて選びました。予算をかけずに足せること、既存のテーマとぶつからないことを条件にしています',
+        '3人ぶんのコードが1か所に集まるので、開発環境とテスト環境を用意しました。動かして確かめてから統合できないと、誰の変更で壊れたのか分からなくなります',
+        '公開後はクライアント自身が更新していくサイトなので、操作と仕様をまとめた資料を残しました。渡さないと、更新のたびに私に連絡が必要になります',
+      ],
+      pointsEn: [
+        'Search, view counts and likes are handled by free plugins I compared and chose. The conditions were that they cost nothing to add and that they would not clash with the theme we had built',
+        "With three people's code coming into one place, I set up local and test environments. Without somewhere to run things before merging, you cannot tell whose change broke what",
+        'The client updates the site themselves after launch, so I wrote up how it works and how to use it. Without that, every small update comes back to me',
+      ],
+    },
+  },
+
   /* ここから下は並び順だけを直すもの。文章には触れない。
 
      seed-sanity.mjs は「すでにあるもの」に手を触れないので、

@@ -77,17 +77,33 @@ export default function AboutSection({ locale }: { locale: Locale }) {
       {/* SPは縦積み、PC(md以上)は色面の上に写真を重ねる。
           並び順は order で入れ替える。HTMLの順序は変えない —
           読み上げソフトと検索エンジンには文章の順序で届いてほしいため。 */}
-      <div className="relative flex flex-col py-14 md:block md:min-h-[650px] md:py-20">
+      {/* min-h は写真の下端より余裕を持って大きくすること。
+
+            写真の上端 md:top-40   160px
+          + 写真の高さ md:h-[480px] 480px
+          = 下端                   640px
+
+          色面は絶対配置ではなく、この箱の高さいっぱいに広がる。
+          写真は絶対配置なので、高さを押し上げない。
+          つまり min-h が写真より短いと、色面だけが先に終わる。
+
+          文章の長いタブ（About / Journey）は中身で伸びるので気づけない。
+          Likes は文章が短く、min-h のままになるのでそこで露出する。
+          写真の高さを変えたら、ここも必ず一緒に見直すこと。 */}
+      <div className="relative flex flex-col py-14 md:block md:min-h-[730px] md:py-20">
         {/* 色面。中身とは切り離した1枚の背景として敷く。
             SPは写真も文章もまるごと覆う。PCは左85%だけ（写真は右にはみ出す）。 */}
-        <motion.div
-          animate={{
-            backgroundColor: current.bgColor,
-          }}
-          transition={{
-            duration: 0.6,
-          }}
-          className={`absolute inset-0 rounded-tr-[48px] md:right-[25%] md:rounded-tr-[80px] ${current.bgColor}`}
+        {/* 色はクラスの付け替えで変わる。切り替えは CSS の transition に任せる。
+
+            以前は Motion の animate に backgroundColor を渡していたが、
+            渡していたのは 'bg-leaf' というクラス名で、色の値ではなかった。
+            Motion は色として読めず、コンソールに警告を出し続けていた。
+            実際に色を付けていたのは、下の className のほう。
+
+            Tailwind のクラス名を、色を受け取る場所に渡さないこと。
+            'bg-leaf' は「クラスの名前」であって「色」ではない。 */}
+        <div
+          className={`absolute inset-0 rounded-tr-[48px] transition-colors duration-[600ms] md:right-[25%] md:rounded-tr-[80px] ${current.bgColor}`}
           aria-hidden
         />
 
@@ -196,10 +212,17 @@ export default function AboutSection({ locale }: { locale: Locale }) {
 
                   alt は空。隣に本文があり、写真は雰囲気を伝えるためのもの。
                   読み上げソフトに「写真」とだけ言われても情報が増えない。 */}
-              {/* PCは横長（幅42% × 高さ400px）。写真は縦長なので上下が切れる。
-                  切る位置は object-top。真ん中で切ると顔から上が消える。
-                  切りたくない場合は枠を縦長にするしかない（object-contain だと左右が空く）。 */}
-              <div className="relative aspect-[3/4] overflow-hidden rounded-tl-[28px] rounded-br-[28px] bg-line select-none md:aspect-auto md:h-[400px]">
+              {/* PCは幅42% × 高さ480px。1500px幅の画面なら 630 × 480 になる。
+
+                  400px にしていたが、写真が引きの構図だと人が小さく見えた。
+                  480 は写真の縦横比（1403:1121 ≒ 1.25）に近く、切れる量が減る。
+
+                  これ以上高くしないこと。写真の上端は md:top-40（160px）にあり、
+                  160 + 480 = 640。セクションの min-h は 650px なので、
+                  520 にすると下にはみ出して次のセクションと重なる。
+
+                  切る位置は focus（aboutData 側）で写真ごとに決める。 */}
+              <div className="relative aspect-[3/4] overflow-hidden rounded-tl-[28px] rounded-br-[28px] bg-line select-none md:aspect-auto md:h-[480px]">
                 <Image
                   src={current.image}
                   alt=""
