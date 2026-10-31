@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from 'react'
 import { Mail, Check } from 'lucide-react'
 import type { Locale } from '@/lib/i18n'
+import { track } from '@/lib/analytics'
 
 /* 問い合わせフォーム。/contact ページの中身。
    トップには置かない。トップにフォームを出すと、そこで読むのが止まる。
@@ -65,6 +66,9 @@ export default function ContactForm({ locale }: { locale: Locale }) {
         return
       }
 
+      // ここだけが「問い合わせが成立した」地点。GAのキーイベントはこれを見る
+      track('contact_submit', { locale })
+
       setStatus('sent')
       setName('')
       setEmail('')
@@ -119,6 +123,7 @@ export default function ContactForm({ locale }: { locale: Locale }) {
                 <Mail size={16} className="text-amber" />
                 <a
                   href="mailto:hello@misakumagai.com"
+                  onClick={() => track('email_click', { locale })}
                   className="transition-colors hover:text-cream"
                 >
                   hello@misakumagai.com

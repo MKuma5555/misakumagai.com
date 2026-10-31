@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { IconBrandGithub, IconBrandInstagram, IconBrandLine, IconBrandLinkedin } from '@tabler/icons-react'
 import type { Locale } from '@/lib/i18n'
 import SectionSeparator from '@/components/ui/SectionSeparator'
+import TrackedLink from '@/components/ui/TrackedLink'
 
 /* トップの締め。フォームは持たず /contact へ送るだけ。
    フォームをトップに置くと、そこで読むのが止まる。
@@ -63,14 +63,19 @@ export default function ContactBand({ locale }: { locale: Locale }) {
               : '歯科医院のサイト、Instagramの運用、小さなお店のLP。ご相談はこちらから'}
           </p>
 
-          <Link href={`/${locale}/contact`} className="group mt-5 inline-flex items-center gap-5">
+          <TrackedLink
+            href={`/${locale}/contact`}
+            event="cta_click"
+            params={{ cta_location: 'contact_band', locale }}
+            className="group mt-5 inline-flex items-center gap-5"
+          >
             <span className="text-4xl tracking-[.04em] md:text-5xl">
               {en ? 'Get in touch' : 'お問い合わせ'}
             </span>
             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cream text-olive-deep transition-all duration-300 group-hover:bg-olive group-hover:text-cream group-hover:translate-x-1">
   <ArrowRight size={18} />
 </span>
-          </Link>
+          </TrackedLink>
         </div>
 
         {/* 罫線ではなくカードにする。線で区切ると「表の仕切り」に見えて、
@@ -92,17 +97,17 @@ export default function ContactBand({ locale }: { locale: Locale }) {
               'flex-1 rounded-card bg-cream px-4 py-6 text-center shadow-[0_2px_8px_rgba(63,59,48,.10)]'
 
             return href ? (
-              <a
+              <TrackedLink
                 key={label}
                 href={href}
-                target="_blank"
-                rel="noopener noreferrer"
+                event="outbound_click"
+                params={{ link: label, locale }}
                 /* ぷくっと浮く。上へ動かすだけだと「ずれた」に見えるので、
                    少し大きくして影を濃くする。3つ揃って初めて浮いて見える。 */
                 className={`${cls} transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.04] hover:shadow-[0_14px_30px_rgba(63,59,48,.22)]`}
               >
                 {inner}
-              </a>
+              </TrackedLink>
             ) : (
               // 準備中。押せないので薄くして、リンクにもしない
               <div key={label} className={`${cls} opacity-50`}>
